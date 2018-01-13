@@ -7,30 +7,54 @@
 //
 
 import Foundation
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 typealias RPNTokens = [String]
 
 enum Operation
 {
-    case BinaryOperation( (Double, Double) -> Double)
-    case UnaryOperation( Double -> Double )
+    case binaryOperation( (Double, Double) -> Double)
+    case unaryOperation( (Double) -> Double )
 }
 
 enum ExpressionElement
 {
-    case Variable ( String )
-    case Number (Double)
-    case Operator ( Operation )
+    case variable ( String )
+    case number (Double)
+    case `operator` ( Operation )
 }
 
 extension String
 {
     var doubleValue : Double?
     {
-        return NSNumberFormatter().numberFromString(self)?.doubleValue
+        return NumberFormatter().number(from: self)?.doubleValue
     }
     
-    func Tokenize(str : String) -> [String]
+    func Tokenize(_ str : String) -> [String]
     {
         var Tokens = [String]()
         var Buffer = ""
@@ -59,9 +83,9 @@ extension String
 
 class ExpressionEvaluator
 {
-    private var variables = Dictionary<String, Double>()
+    fileprivate var variables = Dictionary<String, Double>()
     
-    private var _exp = ""
+    fileprivate var _exp = ""
     var Expression : String { return _exp }
     
     var Result : Double
@@ -69,12 +93,12 @@ class ExpressionEvaluator
         get { return self.EvaluateExpression() }
     }
     
-    func SetVariableValue(variable : String, value : Double)
+    func SetVariableValue(_ variable : String, value : Double)
     {
         variables[variable] = value
     }
     
-    func VariableValue(variableName : String) -> Double
+    func VariableValue(_ variableName : String) -> Double
     {
         if let Value = variables[variableName]
         {
@@ -84,7 +108,7 @@ class ExpressionEvaluator
     }
     
     
-    private func EvaluateExpression() -> Double
+    fileprivate func EvaluateExpression() -> Double
     {
         var numberStack = [Double]()
         let pfConverter = InfixToPostfixConverter(infixString: Expression)
@@ -92,25 +116,25 @@ class ExpressionEvaluator
         for item in items
         {
             switch item {
-            case .Number(let Value):
+            case .number(let Value):
                 //found a number
                 numberStack.append(Value)
-            case .Operator(let AssociatedOperation):
+            case .operator(let AssociatedOperation):
                 switch AssociatedOperation {
-                case .BinaryOperation(let BinaryOperation):
+                case .binaryOperation(let BinaryOperation):
                     if numberStack.count >= 2
                     {
                         let second = numberStack.popLast()!
                         let first = numberStack.popLast()!
                         numberStack.append(BinaryOperation(first, second))
                     }
-                case .UnaryOperation(let UnaryOp):
+                case .unaryOperation(let UnaryOp):
                     if numberStack.count >= 1
                     {
                         numberStack.append(UnaryOp(numberStack.popLast()!))
                     }
                 }
-            case .Variable(let VariableName):
+            case .variable(let VariableName):
                 numberStack.append(VariableValue(VariableName))
             }
         }
@@ -120,7 +144,7 @@ class ExpressionEvaluator
             return numberStack.popLast()!
         }
         
-        return Double.NaN
+        return Double.nan
     }
     
     
@@ -137,20 +161,20 @@ class ExpressionEvaluator
 
 class InfixToPostfixConverter
 {
-    private let TokenString = "()^*/+-÷×−"
+    fileprivate let TokenString = "()^*/+-÷×−"
     
-    private var infixString = "" {
+    fileprivate var infixString = "" {
         didSet{
             self.saved_expression = self.PostfixExpression(infixString)
         }
     }
     
-    private let OperationTable = ["+" : Operation.BinaryOperation({ $0 + $1 }), "-" : Operation.BinaryOperation({ $0 - $1 }),
-                                  "*" : Operation.BinaryOperation({ $0 * $1 }), "/" : Operation.BinaryOperation({ $0 / $1 }),
-                                  "^" : Operation.BinaryOperation({ pow($0, $1) }), "÷" : Operation.BinaryOperation({ $0 / $1 }),
-                                  "×" : Operation.BinaryOperation({ $0 * $1 }), "−" : Operation.BinaryOperation({ $0 - $1 })]
+    fileprivate let OperationTable = ["+" : Operation.binaryOperation({ $0 + $1 }), "-" : Operation.binaryOperation({ $0 - $1 }),
+                                  "*" : Operation.binaryOperation({ $0 * $1 }), "/" : Operation.binaryOperation({ $0 / $1 }),
+                                  "^" : Operation.binaryOperation({ pow($0, $1) }), "÷" : Operation.binaryOperation({ $0 / $1 }),
+                                  "×" : Operation.binaryOperation({ $0 * $1 }), "−" : Operation.binaryOperation({ $0 - $1 })]
     
-    private var saved_expression = [ExpressionElement]()
+    fileprivate var saved_expression = [ExpressionElement]()
     
     var PostfixExpression : [ExpressionElement]
         {
@@ -163,18 +187,18 @@ class InfixToPostfixConverter
         }
     }
     
-    private func IsOperator(op : String) -> Bool
+    fileprivate func IsOperator(_ op : String) -> Bool
     {
         return OperationTable[op] != nil
     }
     
-    private func HasHigherPrecendence(left : Character, right : Character) -> Bool
+    fileprivate func HasHigherPrecendence(_ left : Character, right : Character) -> Bool
     {
         if !TokenString.characters.contains(left) || !TokenString.characters.contains(right) { return false }
-        return TokenString.characters.indexOf(left) <= TokenString.characters.indexOf(right)
+        return TokenString.characters.index(of: left) <= TokenString.characters.index(of: right)
     }
     
-    private func PostfixExpression(input : String) -> [ExpressionElement]
+    fileprivate func PostfixExpression(_ input : String) -> [ExpressionElement]
     {
         var outputList = [ExpressionElement]()
         var opstack = [String]()
@@ -184,7 +208,7 @@ class InfixToPostfixConverter
         {
             if let number = token.doubleValue
             {
-                outputList.append(ExpressionElement.Number(number))
+                outputList.append(ExpressionElement.number(number))
             }
             else if token == "("
             {
@@ -197,7 +221,7 @@ class InfixToPostfixConverter
                     let current = opstack.popLast()!
                     if current != "("
                     {
-                        outputList.append(ExpressionElement.Operator(OperationTable[current]!))
+                        outputList.append(ExpressionElement.operator(OperationTable[current]!))
                     }else { break }
                 }
             }
@@ -211,7 +235,7 @@ class InfixToPostfixConverter
                     if current != "(" && current != ")"{
                         if HasHigherPrecendence(current.characters.first!, right: token.characters.first!)
                         {
-                            outputList.append(ExpressionElement.Operator(OperationTable[current]!))
+                            outputList.append(ExpressionElement.operator(OperationTable[current]!))
                         }
                         else
                         {
@@ -227,13 +251,13 @@ class InfixToPostfixConverter
                 
                 opstack.append(token)
             }else {
-                outputList.append(ExpressionElement.Variable(token))
+                outputList.append(ExpressionElement.variable(token))
             }
         }
         
         while let last = opstack.popLast()
         {
-            outputList.append(ExpressionElement.Operator(OperationTable[last]!))
+            outputList.append(ExpressionElement.operator(OperationTable[last]!))
         }
         
         return outputList

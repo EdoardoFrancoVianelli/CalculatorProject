@@ -24,12 +24,11 @@ extension String
             var result = 0
             
             if characters.first == "-"{
-                start = start.successor()
+                //start = .index(after: start)
                 negative = true
             }
             
-            for i in start..<endIndex{
-                let c = self[i]
+            for c in self.characters{
                 if let cValue = conversionTable[c]{
                     result *= 10
                     result += cValue

@@ -10,7 +10,7 @@ import UIKit
 
 protocol GraphViewDelegate{
     func RenderingStarted()
-    func RenderingEnded(iterations : Int)
+    func RenderingEnded(_ iterations : Int)
 }
 
 extension CGRect
@@ -22,12 +22,12 @@ extension CGRect
     
     func XOutOfBounds() -> Bool
     {
-        return (origin.x + size.width > UIScreen.mainScreen().bounds.size.width)
+        return (origin.x + size.width > UIScreen.main.bounds.size.width)
     }
     
     func YOutOfBounds() -> Bool
     {
-        return (origin.y + size.height > UIScreen.mainScreen().bounds.size.height)
+        return (origin.y + size.height > UIScreen.main.bounds.size.height)
     }
 }
 
@@ -69,9 +69,9 @@ class GraphView: UIView {
         }
     }
     
-    private var LastIterations = 0
+    fileprivate var LastIterations = 0
     
-    private func ReRender()
+    fileprivate func ReRender()
     {
         if AllSet
         {
@@ -88,19 +88,19 @@ class GraphView: UIView {
         }
     }
     
-    private var _XTickWidth : CGFloat = 0.0
-    private var _YTickHeight : CGFloat = 0.0
+    fileprivate var _XTickWidth : CGFloat = 0.0
+    fileprivate var _YTickHeight : CGFloat = 0.0
     
-    private var XTickWidth : CGFloat { return _XTickWidth }
-    private var YTickHeight : CGFloat { return _YTickHeight }
+    fileprivate var XTickWidth : CGFloat { return _XTickWidth }
+    fileprivate var YTickHeight : CGFloat { return _YTickHeight }
     
-    private var XAxis = UIBezierPath()
-    private var YAxis = UIBezierPath()
+    fileprivate var XAxis = UIBezierPath()
+    fileprivate var YAxis = UIBezierPath()
     
-    private var x_ticks = [GraphTick]()
-    private var y_ticks = [GraphTick]()
+    fileprivate var x_ticks = [GraphTick]()
+    fileprivate var y_ticks = [GraphTick]()
     
-    private func XMinMaxDifference() -> CGFloat{
+    fileprivate func XMinMaxDifference() -> CGFloat{
         let AbsMaxX = abs(MaxX)
         let AbsMinX = abs(MinX)
         var MinMaxDifference = AbsMaxX + AbsMinX
@@ -115,7 +115,7 @@ class GraphView: UIView {
     }
     
     
-    private func YMinMaxDifference() -> CGFloat{
+    fileprivate func YMinMaxDifference() -> CGFloat{
         let AbsMaxY = abs(MaxY)
         let AbsMinY = abs(MinY)
         var MinMaxDifference = AbsMaxY + AbsMinY
@@ -130,58 +130,56 @@ class GraphView: UIView {
         return MinMaxDifference
     }
     
-    private func GetXTickWidth() -> CGFloat
+    fileprivate func GetXTickWidth() -> CGFloat
     {
         let MinMaxDifference = XMinMaxDifference()
         return frame.size.width / MinMaxDifference
     }
     
-    private func GetYTickHeight() -> CGFloat
+    fileprivate func GetYTickHeight() -> CGFloat
     {
         let MinMaxDifference = YMinMaxDifference()
         return frame.size.height / MinMaxDifference
     }
     
-    private func RenewTickDimensions()
+    fileprivate func RenewTickDimensions()
     {
         _XTickWidth = GetXTickWidth()
         _YTickHeight = GetYTickHeight()
     }
     
     @IBOutlet var delegate : AnyObject?
-    private var FunctionLabels = [UILabel]()
-    private var lines = [Line]()
+    fileprivate var FunctionLabels = [UILabel]()
+    fileprivate var lines = [Line]()
     
-    private var pointLabel = UILabel(frame: CGRect.zero)
-    private var StartTime = NSDate(timeIntervalSinceNow: 0)
-    private var StartLocation = CGPoint.zero
+    fileprivate var pointLabel = UILabel(frame: CGRect.zero)
     
-    private func AddTapToShowPointInfo()
+    fileprivate func AddTapToShowPointInfo()
     {
         let tapForPoint = UITapGestureRecognizer(target: self, action: #selector(UpdatePointLabel))
         tapForPoint.numberOfTapsRequired = 1
         addGestureRecognizer(tapForPoint)
     }
     
-    private func AddTapToHidePointLabel(){
+    fileprivate func AddTapToHidePointLabel(){
         let tapToHideGesture = UITapGestureRecognizer(target: self, action: #selector(TogglePointLabel))
         pointLabel.addGestureRecognizer(tapToHideGesture)
     }
     
-    internal func TogglePointLabel(sender : UITapGestureRecognizer){
-        if let hidden = sender.view?.hidden{
-            sender.view?.hidden = !hidden
+    internal func TogglePointLabel(_ sender : UITapGestureRecognizer){
+        if let hidden = sender.view?.isHidden{
+            sender.view?.isHidden = !hidden
         }
     }
     
-    private func PointToString(point : CGPoint) -> String
+    fileprivate func PointToString(_ point : CGPoint) -> String
     {
-        let formatter = NSNumberFormatter()
+        let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 3
         
-        if let xPoint = formatter.stringFromNumber(NSNumber(float: Float(point.x)))
+        if let xPoint = formatter.string(from: NSNumber(value: Float(point.x) as Float))
         {
-            if let yPoint = formatter.stringFromNumber(NSNumber(float: Float(point.y)))
+            if let yPoint = formatter.string(from: NSNumber(value: Float(point.y) as Float))
             {
                 return " X = \(xPoint)\n Y = \(yPoint)"
             }
@@ -190,21 +188,21 @@ class GraphView: UIView {
         return "\(point)"
     }
     
-    private func InitializePointLabel()
+    fileprivate func InitializePointLabel()
     {
-        pointLabel.userInteractionEnabled = true
+        pointLabel.isUserInteractionEnabled = true
         pointLabel.adjustsFontSizeToFitWidth = true
         pointLabel.numberOfLines = 2
         addSubview(pointLabel)
     }
     
-    internal func UpdatePointLabel(sender : UIGestureRecognizer)
+    internal func UpdatePointLabel(_ sender : UIGestureRecognizer)
     {
-        SetPointLabelWithLocation(sender.locationInView(self))
+        SetPointLabelWithLocation(sender.location(in: self))
     }
     
-    private func SetPointLabelWithLocation(touchLocation : CGPoint){
-        pointLabel.hidden = false
+    fileprivate func SetPointLabelWithLocation(_ touchLocation : CGPoint){
+        pointLabel.isHidden = false
         let XYPoint = CoordinatesForPoint(Double(touchLocation.x), YCoordinateInScreen: Double(touchLocation.y))
         let labelText = PointToString(XYPoint)
         let labelHeight : CGFloat = 80
@@ -217,11 +215,11 @@ class GraphView: UIView {
         
         if pointLabel.frame.XOutOfBounds()
         {
-            pointLabel.frame.origin.x = UIScreen.mainScreen().bounds.size.width - 10 - pointLabel.frame.width
+            pointLabel.frame.origin.x = UIScreen.main.bounds.size.width - 10 - pointLabel.frame.width
         }
         if pointLabel.frame.YOutOfBounds()
         {
-            pointLabel.frame.origin.y = UIScreen.mainScreen().bounds.size.height - 10 - pointLabel.frame.height
+            pointLabel.frame.origin.y = UIScreen.main.bounds.size.height - 10 - pointLabel.frame.height
         }
         
         pointLabel.text = labelText
@@ -234,9 +232,9 @@ class GraphView: UIView {
         pointLabel.addGestureRecognizer(moveLabelGesture)
     }
     
-    func MovePointLabel(sender : UIPanGestureRecognizer)
+    func MovePointLabel(_ sender : UIPanGestureRecognizer)
     {
-        pointLabel.frame.origin = sender.locationInView(self)
+        pointLabel.frame.origin = sender.location(in: self)
         UpdatePointLabel(sender)
     }
     
@@ -253,6 +251,7 @@ class GraphView: UIView {
     func Initialize()
     {
         ConfigurePinchGesture()
+        ConfigurePanGesture()
         AddTapToShowPointInfo()
         AddTapToHidePointLabel()
         ConfigureMovePointLabel()
@@ -260,45 +259,48 @@ class GraphView: UIView {
         AllSet = true
     }
     
-    private let TickMarkerSize = 15 as CGFloat
+    fileprivate let TickMarkerSize = 15 as CGFloat
     
-    private func LongestDigits(left : Double, right : Double) -> (length : Int, number : Double){
+    fileprivate func LongestDigits(_ left : Double, right : Double) -> (length : Int, number : Double){
         let leftLength = "\(left)".characters.count
         let rightLength = "\(right)".characters.count
         return leftLength > rightLength ? (leftLength, left) : (rightLength, right)
     }
     
-    private func OptimalSkippingFactor(min : CGFloat, max : CGFloat, y : Bool) -> CGFloat
+    fileprivate func OptimalSkippingFactor(_ min : CGFloat, max : CGFloat, y : Bool) -> CGFloat
     {
         let greatestValue = (abs(min.description.Count) > abs(max.description.Count)) ? min : max
+        
         let locationOfGreatestValue = y ? YPoint(Double(greatestValue)) : XPoint(Double(greatestValue))
+        
         let attributedGreatestValue = NSAttributedString(string: greatestValue.description)
         let valueDimension = y ? ((attributedGreatestValue.size().height / 2) + 10) : ((attributedGreatestValue.size().width / 2) + 10)
         let greatestBounds : (lower : Double, upper : Double) = (locationOfGreatestValue - Double(valueDimension), locationOfGreatestValue + Double(valueDimension))
         let lowerBoundPoint = CGFloat(RectXPoint(greatestBounds.lower))
         let upperBoundPoint = CGFloat(RectXPoint(greatestBounds.upper))
         let newSkippingFactor = abs(upperBoundPoint - lowerBoundPoint)
+        print("Skipping factor\(round(newSkippingFactor))")
         return round(newSkippingFactor)
     }
     
-    private func ComputeOptimalSkippingFactor() -> CGFloat
+    fileprivate func ComputeOptimalSkippingFactor() -> CGFloat
     {
         return OptimalSkippingFactor(MinX, max: MaxX, y: false)
     }
     
-    private func ComputeXTicks(inout XTicks : [GraphTick]){
+    fileprivate func ComputeXTicks(_ XTicks : inout [GraphTick]){
         
         var previous : GraphTick?
-        let Start = -(abs(MinX) - (abs(MinX) % XScale)) + 1
+        let Start = -(abs(MinX) - (abs(MinX).truncatingRemainder(dividingBy: XScale))) + 1
         
         var iterations = 0
         var skippingFactor = ComputeOptimalSkippingFactor()
         if skippingFactor <= 0{
             skippingFactor = XScale
         }
-        //print("The skipping factor is \(skippingFactor)")
+        print("The skipping factor is \(skippingFactor), starting at \(Start)")
         
-        for CurrentX in Start.stride(to: MaxX, by: skippingFactor){
+        for CurrentX in stride(from: Start, to: MaxX, by: skippingFactor){
             let ScreenCoordinates = PointForCoordinates(Double(CurrentX), y: 0.0)
             let CurrentTick = GraphTick(number: Double(CurrentX), y: false)
             let StartPoint = CGPoint(x: ScreenCoordinates.x, y: ScreenCoordinates.y - TickMarkerSize / 2)
@@ -322,9 +324,9 @@ class GraphView: UIView {
         print("Iterations for x ticks is \(iterations)")
     }
     
-    private func ComputeYTicks(inout YTicks : [GraphTick]){
+    fileprivate func ComputeYTicks(_ YTicks : inout [GraphTick]){
         var previous : GraphTick?
-        let Start = -(abs(MinY) - (abs(MinY) % YScale)) + 1
+        let Start = -(abs(MinY) - (abs(MinY).truncatingRemainder(dividingBy: YScale))) + 1
         var iterations = 0
         
         var skippingFactor = OptimalSkippingFactor(MinY, max: MaxY, y: true)
@@ -332,7 +334,7 @@ class GraphView: UIView {
             skippingFactor = YScale
         }
 
-        for CurrentY in Start.stride(to: MaxY, by: skippingFactor){
+        for CurrentY in stride(from: Start, to: MaxY, by: skippingFactor){
             let ScreenCoordinates = PointForCoordinates(0.0, y: Double(CurrentY))
             let CurrentTick = GraphTick(number: Double(CurrentY), y: true)
             let StartPoint = CGPoint(x: ScreenCoordinates.x - TickMarkerSize / 2, y: ScreenCoordinates.y)
@@ -356,33 +358,26 @@ class GraphView: UIView {
         print("Y tick iterations is \(iterations)")
     }
     
-    private func ComputeEquations(equations : [String]) -> ([Line], iterations : Int)
+    fileprivate func ComputeEquations(_ equations : [String]) -> ([Line], iterations : Int)
     {
         var ResultingEquations = [Line]()
         
         var num = 0
         
-        for (i,equation) in equations.enumerate()
+        for (i,equation) in equations.enumerated()
         {
             var CurrentEquation = Line(Expression: equation, numLines: i)
             
             let calculator = ExpressionEvaluator(expression: equation)
             
-            var Previous : GraphTick?
-            
-            for i in 0.stride(to: x_ticks.count, by: 1){
-                let Current = x_ticks[i]
-                let lowerBound = (Previous != nil) ? Previous!.Number : Double(MinX)
-                let upperBound = Current.Number
-                
-                
-                for x in lowerBound.stride(to: upperBound, by: (upperBound - lowerBound) / 4){
-                    calculator.SetVariableValue("x", value: x)
-                    let Point = PointForCoordinates(x, y: calculator.Result)
-                    CurrentEquation.AddPoint(Point)
-                    num += 1
-                }
-                Previous = Current
+            let num_ticks = self.frame.size.width / 4
+            let increment = (MaxX - MinX) / num_ticks
+        
+            for x in stride(from: Double(MinX), to: Double(MaxX), by: Double(increment)){
+                calculator.SetVariableValue("x", value: x)
+                let Point = PointForCoordinates(x, y: calculator.Result)
+                CurrentEquation.AddPoint(Point)
+                num += 1
             }
             
             ResultingEquations.append(CurrentEquation)
@@ -398,110 +393,116 @@ class GraphView: UIView {
     
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        UIColor.blackColor().set()
-        XAxis.stroke()
-        YAxis.stroke()
-        
-        for tick in y_ticks{
-            tick.draw()
-        }
-        for tick in x_ticks{
-            tick.draw()
-        }
-        
-        for line in lines { line.Draw() }
-        
-        //if !pointLabel.hidden { SetPointLabelWithLocation(pointLabel.frame.origin) }
-        
-        AllSet = false
-        
-        (delegate as? GraphViewDelegate)?.RenderingEnded(LastIterations)
+    override func draw(_ rect: CGRect) {
+        UIView.animate(withDuration: 0.5, animations: {
+            UIColor.black.set()
+            self.XAxis.stroke()
+            self.YAxis.stroke()
+            
+            for tick in self.y_ticks{
+                tick.draw()
+            }
+            for tick in self.x_ticks{
+                tick.draw()
+            }
+            
+            for line in self.lines { line.Draw() }
+            
+            //if !pointLabel.hidden { SetPointLabelWithLocation(pointLabel.frame.origin) }
+            
+            self.AllSet = false
+            
+            (self.delegate as? GraphViewDelegate)?.RenderingEnded(self.LastIterations)
+        })
     }
     
-    private func TickFormatter() -> NSNumberFormatter{
-        let formatter = NSNumberFormatter()
+    fileprivate func TickFormatter() -> NumberFormatter{
+        let formatter = NumberFormatter()
         formatter.maximumSignificantDigits = 3
         return formatter
     }
         
-    private func RectXPoint(XCoordinateInScreen : Double) -> Double
+    fileprivate func RectXPoint(_ XCoordinateInScreen : Double) -> Double
     {
         return (XCoordinateInScreen / Double(XTickWidth)) - Double(abs(MinX))
     }
     
-    private func RectYPoint(YCoordinateInScreen : Double) -> Double
+    fileprivate func RectYPoint(_ YCoordinateInScreen : Double) -> Double
     {
         return Double(abs(MaxY)) - (YCoordinateInScreen / Double(YTickHeight))
     }
     
-    internal func CoordinatesForPoint(XCoordinateInScreen : Double, YCoordinateInScreen : Double) -> CGPoint
+    internal func CoordinatesForPoint(_ XCoordinateInScreen : Double, YCoordinateInScreen : Double) -> CGPoint
     {
         return CGPoint(x: RectXPoint(XCoordinateInScreen), y: RectYPoint(YCoordinateInScreen))
     }
     
-    private func ComputeXAxis(YLocation : CGFloat, AxisWidth : CGFloat, GraphWidth : CGFloat) -> UIBezierPath
+    internal func CoordinatesForPoint(point : CGPoint) -> CGPoint{
+        return CoordinatesForPoint(Double(point.x), YCoordinateInScreen: Double(point.y))
+    }
+    
+    fileprivate func ComputeXAxis(_ YLocation : CGFloat, AxisWidth : CGFloat, GraphWidth : CGFloat) -> UIBezierPath
     {
         let XAxis = UIBezierPath()
         
-        XAxis.moveToPoint(CGPoint(x: 0.0, y: YLocation))
-        XAxis.addLineToPoint(CGPoint(x: GraphWidth, y: YLocation))
+        XAxis.move(to: CGPoint(x: 0.0, y: YLocation))
+        XAxis.addLine(to: CGPoint(x: GraphWidth, y: YLocation))
         XAxis.lineWidth = AxisWidth
         
         return XAxis
     }
     
-    private func ComputeYAxis(XLocation : CGFloat, AxisWidth : CGFloat, GraphHeight : CGFloat) -> UIBezierPath
+    fileprivate func ComputeYAxis(_ XLocation : CGFloat, AxisWidth : CGFloat, GraphHeight : CGFloat) -> UIBezierPath
     {
         let YAxis = UIBezierPath()
         
-        YAxis.moveToPoint(CGPoint(x: XLocation, y: 0.0))
-        YAxis.addLineToPoint(CGPoint(x: XLocation, y: GraphHeight))
+        YAxis.move(to: CGPoint(x: XLocation, y: 0.0))
+        YAxis.addLine(to: CGPoint(x: XLocation, y: GraphHeight))
         YAxis.lineWidth = AxisWidth
         
         return YAxis
     }
     
-    private func XAxisStartLocation() -> Double
+    fileprivate func XAxisStartLocation() -> Double
     {
         //we know that the minimum is at zero
         return Double(-1 * MinX * XTickWidth)
     }
     
-    private func YAxisSstartLocation() -> Double
+    fileprivate func YAxisSstartLocation() -> Double
     {
         return Double(MaxY * YTickHeight)
     }
     
-    private func XPoint(x : Double) -> Double
+    fileprivate func XPoint(_ x : Double) -> Double
     {
         return XAxisStartLocation() + (Double(XTickWidth) * x)
     }
     
-    private func YPoint(y : Double) -> Double
+    fileprivate func YPoint(_ y : Double) -> Double
     {
         let start = YAxisSstartLocation()
         return start - (Double(YTickHeight) * y)
     }
     
-    internal func PointForCoordinates(x : Double, y : Double) -> CGPoint
+    internal func PointForCoordinates(_ x : Double, y : Double) -> CGPoint
     {
         return CGPoint(x: XPoint(x), y: YPoint(y))
     }
     
-    func LabelAttributedText(expression : String, index : Int, highlighted : Bool) -> NSAttributedString{
+    func LabelAttributedText(_ expression : String, index : Int, highlighted : Bool) -> NSAttributedString{
         let functionText = "Y\(index) = " + expression
         let attr_string = NSMutableAttributedString(string: functionText)
         let fontSize : CGFloat = 16
         if highlighted{
-            attr_string.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFontOfSize(fontSize), range: NSRange(location: 0, length: expression.characters.count))
+            attr_string.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: fontSize), range: NSRange(location: 0, length: expression.characters.count))
         }else{
-            attr_string.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(fontSize), range: NSRange(location: 0, length: expression.characters.count))
+            attr_string.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: fontSize), range: NSRange(location: 0, length: expression.characters.count))
         }
         return attr_string
     }
     
-    private func UpdateFunctionLabel(expression : String, color : UIColor, i : Int)
+    fileprivate func UpdateFunctionLabel(_ expression : String, color : UIColor, i : Int)
     {
         let attributedText = LabelAttributedText(expression, index: i, highlighted: false)
         if i >= FunctionLabels.count
@@ -516,12 +517,12 @@ class GraphView: UIView {
         let tapAction = UITapGestureRecognizer(target: self, action: #selector(HandleTapLabel))
         tapAction.numberOfTapsRequired = 1
         FunctionLabels[i].addGestureRecognizer(tapAction)
-        FunctionLabels[i].userInteractionEnabled = true
+        FunctionLabels[i].isUserInteractionEnabled = true
     }
     
-    internal func HandleTapLabel(sender : UITapGestureRecognizer){
+    internal func HandleTapLabel(_ sender : UITapGestureRecognizer){
         if let text = (sender.view as? UILabel)?.text{
-            if let number = NSNumberFormatter().numberFromString("\(text[text.startIndex.advancedBy(1)])")?.integerValue{
+            if let number = NumberFormatter().number(from: "\(text[text.characters.index(text.startIndex, offsetBy: 1)])")?.intValue{
                 lines[number].width = AxisWidth * 2
                 FunctionLabels[number].attributedText = LabelAttributedText(lines[number].Expression, index: number, highlighted: true)
                 
@@ -564,7 +565,7 @@ class GraphView: UIView {
         AllSet = true
     }
     
-    func Zoom(scale : CGFloat){
+    func Zoom(_ scale : CGFloat){
         let adjustedScale = 1 / scale
         MaxX *= adjustedScale
         MinX *= adjustedScale
@@ -589,9 +590,11 @@ class GraphView: UIView {
         self.addGestureRecognizer(PinchGesture)
     }
     
-    func ManagePinch(gesture : UIPinchGestureRecognizer)
+    func ManagePinch(_ gesture : UIPinchGestureRecognizer)
     {
-        if gesture.state == UIGestureRecognizerState.Failed { return }
+        print("Velocity :\(gesture.velocity)")
+        
+        if gesture.state == UIGestureRecognizerState.failed { return }
 
         let Scale = 1 / gesture.scale
         
@@ -607,54 +610,28 @@ class GraphView: UIView {
 //        print("Scale is \(Scale)")
     }
     
-    private func UpdateStartTimeAndLocation(sender : UIGestureRecognizer)
-    {
-        StartTime = NSDate(timeIntervalSinceNow: 0)
-        StartLocation = sender.locationInView(self)
-    }
-    
-    private func ConfigurePanGesture() {
+    fileprivate func ConfigurePanGesture() {
         let PanGesture = UIPanGestureRecognizer(target: self, action: #selector(ManagePan))
         addGestureRecognizer(PanGesture)
     }
     
-    func ManagePan(sender : UIPanGestureRecognizer)
+    func ManagePan(_ sender : UIPanGestureRecognizer)
     {
-//        print("Start point is \(StartLocation)")
+        let translation = sender.translation(in: self)
+        sender.setTranslation(CGPoint.zero, in: self)
+        let startPoint = CoordinatesForPoint(point: CGPoint.zero)
+        let endPoint = CoordinatesForPoint(point: translation)
         
-        switch sender.state {
-        case .Began:
-            UpdateStartTimeAndLocation(sender)
-        case .Ended:
-            let velocity = sender.velocityInView(self)
-            let time = NSDate(timeIntervalSinceNow: 0).timeIntervalSinceDate(StartTime)
-            if time < 0 {
-//                print("TIME IS NEGATIVE \(time)")
-            }
-            let distances = CGPoint(x: Double(velocity.x) * time, y: Double(velocity.y) * time) + StartLocation
-            let pointsElapsed = CoordinatesForPoint(Double(distances.x), YCoordinateInScreen: Double(distances.y))
-//            print("Distances are \(distances) Points Elapsed: \(pointsElapsed)")
-            
-            //apply the changes
-            
-            MinX -= pointsElapsed.x
-            MaxX -= pointsElapsed.x
-            
-            MinY -= pointsElapsed.y
-            MaxY -= pointsElapsed.y
-            
-            AllSet = true
-            ReRender()
-            
-            // ++ -- +- -+
-            
-            //panning down, y is negative, this should make the graph go up, so it should increase Y max
-            //panning   up, y is positive, this should make the graph go down, so it should decrease Y min
-            
-            UpdateStartTimeAndLocation(sender)
-        default:
-            break
-        }
+        let difference = CGPoint(x: endPoint.x - startPoint.x, y: endPoint.y - startPoint.y)
+        
+        MaxX -= difference.x
+        MinX -= difference.x
+    
+        MinY -= difference.y
+        MaxY -= difference.y
+        
+        AllSet = true
+        ReRender()
     }
     
     //MARK: GraphModelDelegate
@@ -674,13 +651,13 @@ func LinePath(fromPoint p1 : CGPoint,
                                         width : CGFloat) -> UIBezierPath
 {
     let Line = UIBezierPath()
-    Line.moveToPoint(p1)
-    Line.addLineToPoint(p2)
+    Line.move(to: p1)
+    Line.addLine(to: p2)
     Line.lineWidth = width
     return Line
 }
 
-infix operator +- {associativity left}
+infix operator +-
 
 
 func +- (left : Double, right : Double) -> (left : Double, right : Double){

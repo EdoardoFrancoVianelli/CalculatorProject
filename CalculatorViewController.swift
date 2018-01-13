@@ -12,12 +12,12 @@ class CalculatorViewController: UIViewController {
 
     @IBOutlet weak var DisplayLabel: UILabel!
 
-    private var UserTyping = false
+    fileprivate var UserTyping = false
     
     var DisplayValue : Double?{
         get
         {
-            return NSNumberFormatter().numberFromString(DisplayLabel.text!)?.doubleValue
+            return NumberFormatter().number(from: DisplayLabel.text!)?.doubleValue
         }
         set
         {
@@ -46,7 +46,7 @@ class CalculatorViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func TouchButton(sender: UIButton) {
+    @IBAction func TouchButton(_ sender: UIButton) {
         if !UserTyping
         {
             self.DisplayText = sender.currentTitle!
@@ -60,7 +60,7 @@ class CalculatorViewController: UIViewController {
     @IBAction func Backspace() {
         if DisplayText.characters.count > 1
         {
-            DisplayText.removeAtIndex(DisplayText.endIndex.predecessor())
+            DisplayText.remove(at: DisplayText.characters.index(before: DisplayText.endIndex))
         }
     }
     

@@ -11,15 +11,15 @@ import UIKit
 
 class GraphTick{
     
-    private var _number = 0.0
-    private var _number_location = CGPoint.zero{
+    fileprivate var _number = 0.0
+    fileprivate var _number_location = CGPoint.zero{
         didSet{
             AttributedNumber = NSAttributedString(string: NumberString)
         }
     }
-    private var _tick_path = UIBezierPath()
-    private var y_tick = false
-    private var AttributedNumber = NSAttributedString(string: ""){
+    fileprivate var _tick_path = UIBezierPath()
+    fileprivate var y_tick = false
+    fileprivate var AttributedNumber = NSAttributedString(string: ""){
         didSet{
             var origin = CGPoint(x: _number_location.x - AttributedNumber.size().width / 2, y: _number_location.y)
             if y_tick{
@@ -28,10 +28,10 @@ class GraphTick{
             num_frame = CGRect(origin: origin, size: AttributedNumber.size())
         }
     }
-    private var num_frame   = CGRect.zero
+    fileprivate var num_frame   = CGRect.zero
     
     var NumberFrame : CGRect { return num_frame }
-    var NumberString : String { return TickFormatter().stringFromNumber(NSNumber(double: _number))! }
+    var NumberString : String { return TickFormatter().string(from: NSNumber(value: _number as Double))! }
     var TickPath : UIBezierPath { return _tick_path }
     var NumberLocation : CGPoint { return _number_location }
     var Number : Double { return _number }
@@ -41,24 +41,24 @@ class GraphTick{
         SetYTick(y)
     }
     
-    func SetYTick(val : Bool) { y_tick = val }
+    func SetYTick(_ val : Bool) { y_tick = val }
     
-    func SetTickPath(start : CGPoint, end : CGPoint, width : CGFloat){
+    func SetTickPath(_ start : CGPoint, end : CGPoint, width : CGFloat){
         _tick_path = LinePath(fromPoint: start, toPoint: end, width: width)
     }
     
     func draw(){
-        UIColor.blackColor().set()
-        AttributedNumber.drawAtPoint(NumberFrame.origin)
+        UIColor.black.set()
+        AttributedNumber.draw(at: NumberFrame.origin)
         TickPath.stroke()
     }
     
-    func SetNumberLocation(location : CGPoint){
+    func SetNumberLocation(_ location : CGPoint){
         _number_location = location
     }
     
-    private func TickFormatter() -> NSNumberFormatter{
-        let formatter = NSNumberFormatter()
+    fileprivate func TickFormatter() -> NumberFormatter{
+        let formatter = NumberFormatter()
         formatter.maximumSignificantDigits = 3
         return formatter
     }
@@ -66,32 +66,32 @@ class GraphTick{
 
 class GraphElements{
     
-    private var _x_axis  = UIBezierPath()
-    private var _y_axis  = UIBezierPath()
-    private var _x_ticks = [GraphTick]()
-    private var _y_ticks = [GraphTick]()
-    private var _lines   = [Line]()
+    fileprivate var _x_axis  = UIBezierPath()
+    fileprivate var _y_axis  = UIBezierPath()
+    fileprivate var _x_ticks = [GraphTick]()
+    fileprivate var _y_ticks = [GraphTick]()
+    fileprivate var _lines   = [Line]()
     
-    func AddTickToXTicks(tick : GraphTick) { _x_ticks.append(tick) }
-    func AddTickToYTicks(tick : GraphTick) { _y_ticks.append(tick) }
+    func AddTickToXTicks(_ tick : GraphTick) { _x_ticks.append(tick) }
+    func AddTickToYTicks(_ tick : GraphTick) { _y_ticks.append(tick) }
     
-    func SetXAxis(start : CGPoint, end : CGPoint, width : CGFloat)
+    func SetXAxis(_ start : CGPoint, end : CGPoint, width : CGFloat)
     {
         _x_axis = LinePath(fromPoint: start, toPoint: end, width: width)
     }
     
-    func SetYAxis(start : CGPoint, end : CGPoint, width : CGFloat)
+    func SetYAxis(_ start : CGPoint, end : CGPoint, width : CGFloat)
     {
         _y_axis = LinePath(fromPoint: start, toPoint: end, width: width)
     }
     
-    private func DrawAxis(color : UIColor, axis : UIBezierPath){
+    fileprivate func DrawAxis(_ color : UIColor, axis : UIBezierPath){
         color.set()
         axis.stroke()
     }
     
-    func DrawXAxis(color : UIColor) { DrawAxis(color, axis: _x_axis) }
-    func DrawYAxis(color : UIColor) { DrawAxis(color, axis: _y_axis) }
+    func DrawXAxis(_ color : UIColor) { DrawAxis(color, axis: _x_axis) }
+    func DrawYAxis(_ color : UIColor) { DrawAxis(color, axis: _y_axis) }
     
     func DrawLines(){
         for line in _lines{
@@ -99,11 +99,11 @@ class GraphElements{
         }
     }
     
-    func AddLineToLines(line : Line){
+    func AddLineToLines(_ line : Line){
         _lines.append(line)
     }
     
-    func AddPointToLineAtIndex(point : CGPoint, index i : Int){
+    func AddPointToLineAtIndex(_ point : CGPoint, index i : Int){
         if i < 0 || i >= _lines.count{
             return
         }
@@ -122,20 +122,20 @@ struct Line {
         }
     }
     
-    private var colors = [UIColor.redColor(),
-                          UIColor.blackColor(),
-                          UIColor.blueColor(),
-                          UIColor.brownColor(),
-                          UIColor.cyanColor(),
-                          UIColor.grayColor(),
-                          UIColor.greenColor(),
-                          UIColor.lightGrayColor(),
-                          UIColor.magentaColor(),
-                          UIColor.orangeColor(),
-                          UIColor.purpleColor()]
-    private var _expression : String = ""
-    private var _color : UIColor = UIColor.redColor()
-    private var path = UIBezierPath()
+    fileprivate var colors = [UIColor.red,
+                          UIColor.black,
+                          UIColor.blue,
+                          UIColor.brown,
+                          UIColor.cyan,
+                          UIColor.gray,
+                          UIColor.green,
+                          UIColor.lightGray,
+                          UIColor.magenta,
+                          UIColor.orange,
+                          UIColor.purple]
+    fileprivate var _expression : String = ""
+    fileprivate var _color : UIColor = UIColor.red
+    fileprivate var path = UIBezierPath()
     
     var Path : UIBezierPath {
         return path
@@ -158,16 +158,16 @@ struct Line {
     
     func ResetPath() { path.removeAllPoints() }
     
-    private var HasPoints = false
+    fileprivate var HasPoints = false
     
-    mutating func AddPoint(point : CGPoint)
+    mutating func AddPoint(_ point : CGPoint)
     {
         if !HasPoints
         {
-            path.moveToPoint(point)
+            path.move(to: point)
             HasPoints = true
         }else{
-            path.addLineToPoint(point)
+            path.addLine(to: point)
         }
     }
     

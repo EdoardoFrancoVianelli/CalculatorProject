@@ -10,18 +10,18 @@ import UIKit
 
 class MoreViewController: UITableViewController, MoreModelDelegate {
 
-    private let DataModel = MoreModel()
-    private let CellIdentifier = "MoreCell"
-    private let NamesForSection = [0 : ["X Max", "X Min", "X Scale"] , 1 : ["Y Max", "Y Min", "Y Scale"],
+    fileprivate let DataModel = MoreModel()
+    fileprivate let CellIdentifier = "MoreCell"
+    fileprivate let NamesForSection = [0 : ["X Max", "X Min", "X Scale"] , 1 : ["Y Max", "Y Min", "Y Scale"],
                                    2 : ["Y 1", "Y 2", "Y 3", "Y 4", "Y 5", "Y 6"] ]
-    private let SetterFunctions : Dictionary<String, (MoreModel, Double) -> Void> =
+    fileprivate let SetterFunctions : Dictionary<String, (MoreModel, Double) -> Void> =
         [ "XMax"    : { $0.XMax = $1 },
           "X Min"   : { $0.XMin = $1 } ,
           "X Scale" : { $0.XScale = $1 },
           "Y Max"   : { $0.YMax = $1 },
           "Y Min"   : { $0.YMin = $1 },
           "Y Scale" : { $0.YScale = $1 } ]
-    private let ValuesForNames : Dictionary<String, (MoreModel) -> String> = ["X Max" : { $0.XMax.description },
+    fileprivate let ValuesForNames : Dictionary<String, (MoreModel) -> String> = ["X Max" : { $0.XMax.description },
                                                                               "X Min"  : { $0.XMin.description },
                                                                               "X Scale"  : { $0.XScale.description },
                                                                               "Y Max" : { $0.YMax.description },
@@ -45,16 +45,16 @@ class MoreViewController: UITableViewController, MoreModelDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func ParameterChanged(sender: UITextField) {
+    @IBAction func ParameterChanged(_ sender: UITextField) {
     
         sender.resignFirstResponder()
     }
     
-    @IBAction func SetParameter(sender : UITextField)
+    @IBAction func SetParameter(_ sender : UITextField)
     {
         sender.resignFirstResponder()
         if let CurrentValue = sender.text{
-            if let NewValue = NSNumberFormatter().numberFromString(CurrentValue)?.doubleValue
+            if let NewValue = NumberFormatter().number(from: CurrentValue)?.doubleValue
             {
                 print("The new value is \(NewValue)")
             }
@@ -80,11 +80,11 @@ class MoreViewController: UITableViewController, MoreModelDelegate {
     
     //MARK: UITableViewDelegate and Data Source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0, 1:
             return 3
@@ -93,7 +93,7 @@ class MoreViewController: UITableViewController, MoreModelDelegate {
         }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
             return "X Parameters"
@@ -106,8 +106,8 @@ class MoreViewController: UITableViewController, MoreModelDelegate {
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if let currentCell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier) as? MoreTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let currentCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as? MoreTableViewCell
         {
             if let Names = NamesForSection[indexPath.section]
             {
@@ -128,27 +128,27 @@ class MoreViewController: UITableViewController, MoreModelDelegate {
     
     //MARK: MoreModelDelegate
     
-    func XScaleChanged(newXScale : Double){
+    func XScaleChanged(_ newXScale : Double){
         tableView.reloadData()
     }
     
-    func XMinChanged(newXMin : Double){
+    func XMinChanged(_ newXMin : Double){
         tableView.reloadData()
     }
     
-    func XMaxChanged(newXMax : Double){
+    func XMaxChanged(_ newXMax : Double){
         tableView.reloadData()
     }
     
-    func YScaleChanged(newYScale : Double){
+    func YScaleChanged(_ newYScale : Double){
         tableView.reloadData()
     }
     
-    func YMinChanged(newYMin : Double){
+    func YMinChanged(_ newYMin : Double){
         tableView.reloadData()
     }
     
-    func YMaxChanged(newYMax : Double){
+    func YMaxChanged(_ newYMax : Double){
         tableView.reloadData()
     }
 }

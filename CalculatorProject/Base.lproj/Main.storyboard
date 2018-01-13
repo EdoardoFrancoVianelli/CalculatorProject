@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K2E-iZ-XGY">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="K2E-iZ-XGY">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Calculator-->
@@ -15,319 +19,319 @@
                         <viewControllerLayoutGuide type="bottom" id="g6P-1j-i8b"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yAm-CG-kAP" customClass="CalculatorView" customModule="CalculatorProject" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bdh-gJ-fFx">
-                                <rect key="frame" x="28" y="28" width="544" height="30"/>
+                                <rect key="frame" x="24" y="28" width="327" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sdu-mX-BfL">
-                                <rect key="frame" x="303" y="63" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="190" y="63" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="1"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="doz-CD-brS"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="em6-M1-W4c">
-                                <rect key="frame" x="377" y="63" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="236.5" y="63" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="2"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="LVo-o0-JgN"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K1f-rI-rf4">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K1f-rI-rf4">
                                 <rect key="frame" x="451" y="63" width="70" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="3"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="hqp-08-ohl"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nuz-2v-DXP">
-                                <rect key="frame" x="526" y="63" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="329" y="63" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="+"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="HVb-s6-Dbk"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7kq-FM-Kpy">
-                                <rect key="frame" x="5" y="356" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="5" y="396" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="sin"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="sgK-lh-3iU"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D30-Xc-3Fi">
-                                <rect key="frame" x="303" y="161" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="190" y="174" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="4"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="O6u-nS-U0J"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgd-cj-DDK">
-                                <rect key="frame" x="377" y="161" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="236.5" y="174" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="5"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="8jO-JH-3DZ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xN-pW-1zE">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6xN-pW-1zE">
                                 <rect key="frame" x="451" y="161" width="70" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="6"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="Eaz-vd-P3G"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gab-ec-WZ3">
-                                <rect key="frame" x="303" y="258" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="190" y="285" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="7"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="IRX-4W-cIE"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SSR-iq-vWS">
-                                <rect key="frame" x="377" y="258" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="236.5" y="285" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="8"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="ml0-ta-BdC"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bc0-tb-w6c">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bc0-tb-w6c">
                                 <rect key="frame" x="451" y="258" width="70" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="9"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="iMt-XP-kXW"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HUe-RV-iZX">
-                                <rect key="frame" x="377" y="356" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="236.5" y="396" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="0"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="hYV-Ua-t6T"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sOd-Qg-np7">
-                                <rect key="frame" x="526" y="161" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="329" y="174" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="−"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="0mQ-iA-cpO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LeK-wc-cVV">
-                                <rect key="frame" x="526" y="258" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="329" y="285" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="÷"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="CuM-GN-GAQ"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulp-Aq-UAO">
-                                <rect key="frame" x="526" y="356" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="329" y="396" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="×"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="bPJ-J3-JoL"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0RN-xb-9jN">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0RN-xb-9jN">
                                 <rect key="frame" x="451" y="356" width="70" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="↵"/>
                                 <connections>
                                     <action selector="Enter" destination="DSb-PD-sgU" eventType="touchUpInside" id="FVp-YC-rbU"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4f-3P-gAj">
-                                <rect key="frame" x="303" y="356" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="190" y="396" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="."/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="ipe-et-2Da"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N2d-kM-Dvt">
-                                <rect key="frame" x="79" y="356" width="70" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="51.5" y="396" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="cos"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="OO1-Aa-vhS"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="30c-Td-lvq">
-                                <rect key="frame" x="154" y="356" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="97.5" y="396" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="tan"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="7R4-tI-Kjv"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OtL-o8-PrH">
-                                <rect key="frame" x="79" y="258" width="70" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="51.5" y="285" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="cosh"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="x8F-JV-BUt"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZdX-o8-spn">
-                                <rect key="frame" x="154" y="258" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="97.5" y="285" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="tanh"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="gVj-OE-yW0"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9hu-jo-wI7">
-                                <rect key="frame" x="5" y="258" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="5" y="285" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="sinh"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="G16-Ou-QaU"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxj-aa-aR7">
-                                <rect key="frame" x="228" y="356" width="70" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="144" y="396" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="𝞹"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="WIq-4z-yVY"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tuN-lf-h95">
-                                <rect key="frame" x="228" y="258" width="70" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="144" y="285" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="e"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="dVM-VQ-JkE"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VuV-Fc-qip">
-                                <rect key="frame" x="79" y="161" width="70" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="51.5" y="174" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="^3"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="VXm-Ky-DeP"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L91-4X-lsQ">
-                                <rect key="frame" x="154" y="161" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="97.5" y="174" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="^-1"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="2ah-J7-oqz"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qih-kL-W2f">
-                                <rect key="frame" x="5" y="161" width="69" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="5" y="174" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="^2"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="Cak-OD-OyJ"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nmh-Kt-J6K">
-                                <rect key="frame" x="228" y="161" width="70" height="92"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="144" y="174" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="√"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="wbX-Jw-XeR"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W0g-zB-uCV">
-                                <rect key="frame" x="79" y="63" width="70" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="51.5" y="63" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="ln"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="cFO-8c-qLV"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4PS-Hk-LJL">
-                                <rect key="frame" x="154" y="63" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="97.5" y="63" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Rad"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQN-0u-kKM">
-                                <rect key="frame" x="5" y="63" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="5" y="63" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="log"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="Hb3-Ee-Ugl"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kcp-xe-F1U">
-                                <rect key="frame" x="228" y="63" width="70" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="144" y="63" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="2nd"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PjR-pm-Txp">
-                                <rect key="frame" x="5" y="453" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="5" y="507" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Mc"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dA0-UX-Jh1">
-                                <rect key="frame" x="79" y="453" width="70" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="51.5" y="507" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="M+"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NWR-tq-CS9">
-                                <rect key="frame" x="154" y="453" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="97.5" y="507" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="M-"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n4F-mA-bnN">
-                                <rect key="frame" x="228" y="453" width="70" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="144" y="507" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="M"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dIf-uF-gom">
-                                <rect key="frame" x="377" y="453" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="236.5" y="507" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title=")"/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="f8W-dq-8Ww"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ARP-gi-ePG">
-                                <rect key="frame" x="303" y="453" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="190" y="507" width="41.5" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="("/>
                                 <connections>
                                     <action selector="TouchButton:" destination="DSb-PD-sgU" eventType="touchUpInside" id="Yga-Rb-FUQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qKE-zI-tlf">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qKE-zI-tlf">
                                 <rect key="frame" x="451" y="453" width="70" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="C"/>
                                 <connections>
                                     <action selector="Clear" destination="DSb-PD-sgU" eventType="touchUpInside" id="96s-QZ-rAQ"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lur-aw-EPk">
-                                <rect key="frame" x="526" y="453" width="69" height="93"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="329" y="507" width="41" height="106"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="←"/>
                                 <connections>
                                     <action selector="Backspace" destination="DSb-PD-sgU" eventType="touchUpInside" id="TF3-b6-ARQ"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Sdu-mX-BfL" firstAttribute="leading" secondItem="Kcp-xe-F1U" secondAttribute="trailing" constant="5" id="0DI-SG-N3a"/>
                             <constraint firstItem="g6P-1j-i8b" firstAttribute="top" secondItem="qKE-zI-tlf" secondAttribute="bottom" constant="5" id="0Zw-2O-o6u"/>
@@ -523,94 +527,12 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleAspectFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="hRn-yw-JwM" customClass="GraphView" customModule="CalculatorProject" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="600" height="531"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tG9-pQ-IQ9">
-                                        <rect key="frame" x="524" y="423" width="30" height="30"/>
-                                        <state key="normal" title="↑"/>
-                                        <connections>
-                                            <action selector="MoveGraphUp" destination="BYZ-38-t0r" eventType="touchUpInside" id="SEF-11-fBT"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0i4-XE-b9U">
-                                        <rect key="frame" x="562" y="456" width="30" height="30"/>
-                                        <state key="normal" title="→"/>
-                                        <connections>
-                                            <action selector="MoveGraphRight" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bsp-Xb-17R"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="geN-6h-Z9O">
-                                        <rect key="frame" x="486" y="456" width="30" height="30"/>
-                                        <state key="normal" title="←"/>
-                                        <connections>
-                                            <action selector="MoveGraphLeft" destination="BYZ-38-t0r" eventType="touchUpInside" id="fwb-RX-yYx"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ctq-kW-7sc">
-                                        <rect key="frame" x="524" y="493" width="30" height="30"/>
-                                        <state key="normal" title="↓"/>
-                                        <connections>
-                                            <action selector="MoveGraphDown" destination="BYZ-38-t0r" eventType="touchUpInside" id="IJz-YI-nwH"/>
-                                        </connections>
-                                    </button>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="f1I-XN-aji">
-                                        <rect key="frame" x="8" y="503" width="20" height="20"/>
-                                    </activityIndicatorView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C3w-he-Tc1">
-                                        <rect key="frame" x="36" y="502" width="75" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z5s-sO-AaW">
-                                        <rect key="frame" x="486" y="423" width="30" height="30"/>
-                                        <state key="normal" title="+"/>
-                                        <connections>
-                                            <action selector="ZoomIn" destination="BYZ-38-t0r" eventType="touchUpInside" id="c6t-Tr-aEk"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yux-QH-jgZ">
-                                        <rect key="frame" x="562" y="423" width="30" height="30"/>
-                                        <state key="normal" title="−"/>
-                                        <connections>
-                                            <action selector="ZoomOut" destination="BYZ-38-t0r" eventType="touchUpInside" id="efv-JG-pPp"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6it-nJ-38Y">
-                                        <rect key="frame" x="562" y="493" width="30" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="B4r-QT-XGH"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="IowanOldStyle-Italic" family="Iowan Old Style" pointSize="27"/>
-                                        <state key="normal" title="i"/>
-                                        <connections>
-                                            <action selector="DisplayInfo" destination="BYZ-38-t0r" eventType="touchUpInside" id="214-1b-S9I"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="0i4-XE-b9U" firstAttribute="leading" secondItem="tG9-pQ-IQ9" secondAttribute="trailing" constant="8" id="2IE-6J-qTV"/>
-                                    <constraint firstItem="0i4-XE-b9U" firstAttribute="leading" secondItem="geN-6h-Z9O" secondAttribute="trailing" constant="46" id="4Ga-l8-cYq"/>
-                                    <constraint firstItem="0i4-XE-b9U" firstAttribute="leading" secondItem="Ctq-kW-7sc" secondAttribute="trailing" constant="8" id="5f2-9L-SbH"/>
-                                    <constraint firstAttribute="bottom" secondItem="Ctq-kW-7sc" secondAttribute="bottom" constant="8" id="B7Z-oq-oPL"/>
-                                    <constraint firstItem="yux-QH-jgZ" firstAttribute="leading" secondItem="tG9-pQ-IQ9" secondAttribute="trailing" constant="8" id="Hb3-tN-ivV"/>
-                                    <constraint firstItem="geN-6h-Z9O" firstAttribute="top" secondItem="Z5s-sO-AaW" secondAttribute="bottom" constant="3" id="aVo-TE-Z8R"/>
-                                    <constraint firstItem="Ctq-kW-7sc" firstAttribute="top" secondItem="0i4-XE-b9U" secondAttribute="bottom" constant="7" id="crx-UI-qBF"/>
-                                    <constraint firstAttribute="trailing" secondItem="0i4-XE-b9U" secondAttribute="trailing" constant="8" id="fz0-MC-sfv"/>
-                                    <constraint firstItem="0i4-XE-b9U" firstAttribute="top" secondItem="yux-QH-jgZ" secondAttribute="bottom" constant="3" id="iPN-uF-NmC"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="6it-nJ-38Y" secondAttribute="trailing" id="jpj-fT-AvH"/>
-                                    <constraint firstItem="Ctq-kW-7sc" firstAttribute="top" secondItem="geN-6h-Z9O" secondAttribute="bottom" constant="7" id="nuJ-kp-MuX"/>
-                                    <constraint firstItem="tG9-pQ-IQ9" firstAttribute="leading" secondItem="Z5s-sO-AaW" secondAttribute="trailing" constant="8" id="s0B-Ja-pAh"/>
-                                    <constraint firstItem="6it-nJ-38Y" firstAttribute="top" secondItem="0i4-XE-b9U" secondAttribute="bottom" constant="7" id="sMx-vs-zNm"/>
-                                    <constraint firstItem="f1I-XN-aji" firstAttribute="leading" secondItem="hRn-yw-JwM" secondAttribute="leading" constant="8" id="sVD-vC-q2p"/>
-                                    <constraint firstItem="C3w-he-Tc1" firstAttribute="leading" secondItem="f1I-XN-aji" secondAttribute="trailing" constant="8" id="uzh-JY-JPd"/>
-                                    <constraint firstItem="0i4-XE-b9U" firstAttribute="top" secondItem="tG9-pQ-IQ9" secondAttribute="bottom" constant="3" id="xr7-sI-kec"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="AxisWidth">
                                         <real key="value" value="1"/>
@@ -639,14 +561,12 @@
                                 </connections>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hRn-yw-JwM" secondAttribute="bottom" id="RuL-h8-uge"/>
                             <constraint firstAttribute="trailing" secondItem="hRn-yw-JwM" secondAttribute="trailing" id="c0Z-fG-whS"/>
                             <constraint firstItem="hRn-yw-JwM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="dCm-D6-Nvs"/>
                             <constraint firstItem="hRn-yw-JwM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="dwo-53-yo8"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="C3w-he-Tc1" secondAttribute="bottom" constant="8" id="gpQ-me-i5j"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="f1I-XN-aji" secondAttribute="bottom" constant="8" id="se1-FC-5dx"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="AxisWidth">
@@ -683,9 +603,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Graph" id="fQ1-4k-aI0"/>
                     <connections>
-                        <outlet property="StatusLabel" destination="C3w-he-Tc1" id="TRQ-RL-vY9"/>
                         <outlet property="graph" destination="hRn-yw-JwM" id="q3o-tT-jgg"/>
-                        <outlet property="spinner" destination="f1I-XN-aji" id="pvn-TR-5fv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -699,7 +617,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" id="Yn8-nA-FtL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="D0z-qF-9lW"/>
@@ -716,19 +634,19 @@
             <objects>
                 <tableViewController id="cAt-5l-h1L" customClass="MoreViewController" customModule="CalculatorProject" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="7Ts-AQ-w8B">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MoreCell" id="fbR-kh-q6P" customClass="MoreTableViewCell" customModule="CalculatorProject" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="114" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fbR-kh-q6P" id="TRw-aW-p5K">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vB8-61-VQA">
-                                            <rect key="frame" x="63" y="5" width="529" height="30"/>
+                                            <rect key="frame" x="63" y="5" width="304" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="fN5-tV-0Ee"/>
                                             </constraints>
@@ -741,7 +659,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a9f-R4-ybX">
                                             <rect key="frame" x="10" y="11" width="45" height="21"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>

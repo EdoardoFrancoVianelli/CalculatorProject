@@ -14,12 +14,12 @@ class GraphViewController: UIViewController, GraphViewDelegate {
     
     @IBOutlet weak var graph: GraphView!
     @IBOutlet weak var StatusLabel: UILabel!
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
-    var start = NSDate(timeIntervalSinceNow: 0)
+    @IBOutlet weak var spinner: UIActivityIndicatorView?
+    var start = Date(timeIntervalSinceNow: 0)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        spinner.hidesWhenStopped = true
+        spinner?.hidesWhenStopped = true
         debugging = true
         // Do any additional setup after loading the view.
     }
@@ -56,16 +56,16 @@ class GraphViewController: UIViewController, GraphViewDelegate {
     @IBAction func DisplayInfo() {
         let title = "Useful Information"
         let message = "Use the arrows to move the graph up, down, left and right.\nUse the + and - buttons to zoom in and out, respectively"
-        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil)
-        let informationAlert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        let informationAlert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         informationAlert.addAction(okAction)
-        self.presentViewController(informationAlert, animated: true, completion: nil)
+        self.present(informationAlert, animated: true, completion: nil)
     }
     
-    func SetButtons(enabled : Bool){
+    func SetButtons(_ enabled : Bool){
         for view in graph.subviews{
             if let button = view as? UIButton{
-                button.enabled = enabled
+                button.isEnabled = enabled
             }
         }
     }
@@ -73,11 +73,11 @@ class GraphViewController: UIViewController, GraphViewDelegate {
     //MARK: GraphViewDelegate
     
     func RenderingStarted(){
-        start = NSDate(timeIntervalSinceNow: 0)
+        start = Date(timeIntervalSinceNow: 0)
     }
     
-    func RenderingEnded(iterations : Int){
-        let timeTaken = NSDate().timeIntervalSinceDate(start)
+    func RenderingEnded(_ iterations : Int){
+        let timeTaken = Date().timeIntervalSince(start)
         print("Time taken is \(timeTaken)")
     }
     
