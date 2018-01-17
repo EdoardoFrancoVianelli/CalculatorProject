@@ -6,42 +6,40 @@
 //  Copyright © 2016 Edoardo Franco Vianelli. All rights reserved.
 //
 
+extension String{
+    func removeSpaces() -> String{
+        return self.replacingOccurrences(of: " ", with: "")
+    }
+}
+
 import UIKit
 
-class MoreViewController: UITableViewController, MoreModelDelegate {
+class MoreViewController: UITableViewController {
 
-    fileprivate let DataModel = MoreModel()
+    private let DefaultsForName = ["XMax" : "10",
+                                   "XMin" : "-10",
+                                   "XScale" : "1.0",
+                                   "YMax" : "10.0",
+                                   "YMin" : "-10.0",
+                                   "YScale" : "1.0",
+                                   "Y1" : "x",
+                                   "Y2" : "x^2",
+                                   "Y3" : "x^3",
+                                   "Y4" : "x^4",
+                                   "Y5" : "x^5",
+                                   "Y6" : "x^6"]
     fileprivate let CellIdentifier = "MoreCell"
     fileprivate let NamesForSection = [0 : ["X Max", "X Min", "X Scale"] , 1 : ["Y Max", "Y Min", "Y Scale"],
                                    2 : ["Y 1", "Y 2", "Y 3", "Y 4", "Y 5", "Y 6"] ]
-    fileprivate let SetterFunctions : Dictionary<String, (MoreModel, Double) -> Void> =
-        [ "XMax"    : { $0.XMax = $1 },
-          "X Min"   : { $0.XMin = $1 } ,
-          "X Scale" : { $0.XScale = $1 },
-          "Y Max"   : { $0.YMax = $1 },
-          "Y Min"   : { $0.YMin = $1 },
-          "Y Scale" : { $0.YScale = $1 } ]
-    fileprivate let ValuesForNames : Dictionary<String, (MoreModel) -> String> = ["X Max" : { $0.XMax.description },
-                                                                              "X Min"  : { $0.XMin.description },
-                                                                              "X Scale"  : { $0.XScale.description },
-                                                                              "Y Max" : { $0.YMax.description },
-                                                                              "Y Min"  : { $0.YMin.description },
-                                                                              "Y Scale"  : { $0.YScale.description },
-                                                                              "Y 1" : { _ in "x" },
-                                                                              "Y 2" : { _ in "x^2" },
-                                                                              "Y 3" : { _ in "x^3" },
-                                                                              "Y 4" : { _ in "x^4" },
-                                                                              "Y 5" : { _ in "x^5" },
-                                                                              "Y 6" : { _ in "x^6" }]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        DataModel.delegate = self
         // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
         // Dispose of any resources that can be recreated.
     }
     
@@ -56,7 +54,10 @@ class MoreViewController: UITableViewController, MoreModelDelegate {
         if let CurrentValue = sender.text{
             if let NewValue = NumberFormatter().number(from: CurrentValue)?.doubleValue
             {
-                print("The new value is \(NewValue)")
+                guard let cell = sender.superview?.superview as? MoreTableViewCell else { return }
+                guard let parameterName = cell.Label?.text else { return }
+                
+                Settings.setSaved(parameterName.removeSpaces(), NewValue)
             }
             else
             {
@@ -112,9 +113,9 @@ class MoreViewController: UITableViewController, MoreModelDelegate {
             if let Names = NamesForSection[indexPath.section]
             {
                 currentCell.Label.text = Names[indexPath.row]
-                if let value = ValuesForNames[currentCell.Label.text!]{
-                    currentCell.TextField.text = value(DataModel)
-                }
+                let parameter_id = currentCell.Label.text!.removeSpaces()
+                let default_value = DefaultsForName[parameter_id]!
+                currentCell.TextField.text = "\(Settings.getSavedOrDefault(parameter_id, default_value))"
             }
             else
             {
@@ -126,31 +127,6 @@ class MoreViewController: UITableViewController, MoreModelDelegate {
         return UITableViewCell()
     }
     
-    //MARK: MoreModelDelegate
-    
-    func XScaleChanged(_ newXScale : Double){
-        tableView.reloadData()
-    }
-    
-    func XMinChanged(_ newXMin : Double){
-        tableView.reloadData()
-    }
-    
-    func XMaxChanged(_ newXMax : Double){
-        tableView.reloadData()
-    }
-    
-    func YScaleChanged(_ newYScale : Double){
-        tableView.reloadData()
-    }
-    
-    func YMinChanged(_ newYMin : Double){
-        tableView.reloadData()
-    }
-    
-    func YMaxChanged(_ newYMax : Double){
-        tableView.reloadData()
-    }
 }
 
 

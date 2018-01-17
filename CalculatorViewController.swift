@@ -58,9 +58,9 @@ class CalculatorViewController: UIViewController {
     }
 
     @IBAction func Backspace() {
-        if DisplayText.characters.count > 1
+        if DisplayText.count > 1
         {
-            DisplayText.remove(at: DisplayText.characters.index(before: DisplayText.endIndex))
+            DisplayText.remove(at: DisplayText.index(before: DisplayText.endIndex))
         }
     }
     

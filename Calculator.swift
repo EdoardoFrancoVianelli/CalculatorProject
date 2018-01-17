@@ -58,9 +58,9 @@ extension String
     {
         var Tokens = [String]()
         var Buffer = ""
-        for item in self.characters
+        for item in self
         {
-            if str.characters.contains(item)
+            if str.contains(item)
             {
                 if Buffer != ""
                 {
@@ -194,8 +194,8 @@ class InfixToPostfixConverter
     
     fileprivate func HasHigherPrecendence(_ left : Character, right : Character) -> Bool
     {
-        if !TokenString.characters.contains(left) || !TokenString.characters.contains(right) { return false }
-        return TokenString.characters.index(of: left) <= TokenString.characters.index(of: right)
+        if !TokenString.contains(left) || !TokenString.contains(right) { return false }
+        return TokenString.index(of: left) <= TokenString.index(of: right)
     }
     
     fileprivate func PostfixExpression(_ input : String) -> [ExpressionElement]
@@ -233,7 +233,7 @@ class InfixToPostfixConverter
                 {
                     let current = opstack.popLast()!
                     if current != "(" && current != ")"{
-                        if HasHigherPrecendence(current.characters.first!, right: token.characters.first!)
+                        if HasHigherPrecendence(current.first!, right: token.first!)
                         {
                             outputList.append(ExpressionElement.operator(OperationTable[current]!))
                         }

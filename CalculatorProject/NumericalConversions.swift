@@ -19,16 +19,15 @@ extension String
                                                                 "4" : 4, "5" : 5,
                                                                 "6" : 6, "7" : 7,
                                                                 "8" : 8, "9" : 9]
-            var start = startIndex
             var negative = false
             var result = 0
             
-            if characters.first == "-"{
+            if self[self.startIndex] == "-"{
                 //start = .index(after: start)
                 negative = true
             }
             
-            for c in self.characters{
+            for c in self {
                 if let cValue = conversionTable[c]{
                     result *= 10
                     result += cValue

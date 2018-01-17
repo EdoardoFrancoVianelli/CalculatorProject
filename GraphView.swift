@@ -33,7 +33,7 @@ extension CGRect
 
 extension String{
     var Count : Int{
-        return self.characters.count
+        return self.count
     }
 }
 
@@ -166,7 +166,7 @@ class GraphView: UIView {
         pointLabel.addGestureRecognizer(tapToHideGesture)
     }
     
-    internal func TogglePointLabel(_ sender : UITapGestureRecognizer){
+    @objc internal func TogglePointLabel(_ sender : UITapGestureRecognizer){
         if let hidden = sender.view?.isHidden{
             sender.view?.isHidden = !hidden
         }
@@ -196,7 +196,7 @@ class GraphView: UIView {
         addSubview(pointLabel)
     }
     
-    internal func UpdatePointLabel(_ sender : UIGestureRecognizer)
+    @objc internal func UpdatePointLabel(_ sender : UIGestureRecognizer)
     {
         SetPointLabelWithLocation(sender.location(in: self))
     }
@@ -206,7 +206,7 @@ class GraphView: UIView {
         let XYPoint = CoordinatesForPoint(Double(touchLocation.x), YCoordinateInScreen: Double(touchLocation.y))
         let labelText = PointToString(XYPoint)
         let labelHeight : CGFloat = 80
-        var labelWidth : CGFloat = CGFloat( (labelText.characters.count / 2 ) * 10)
+        var labelWidth : CGFloat = CGFloat( (labelText.count / 2 ) * 10)
         if labelWidth > 100
         {
             labelWidth = 100
@@ -232,7 +232,7 @@ class GraphView: UIView {
         pointLabel.addGestureRecognizer(moveLabelGesture)
     }
     
-    func MovePointLabel(_ sender : UIPanGestureRecognizer)
+    @objc func MovePointLabel(_ sender : UIPanGestureRecognizer)
     {
         pointLabel.frame.origin = sender.location(in: self)
         UpdatePointLabel(sender)
@@ -262,8 +262,8 @@ class GraphView: UIView {
     fileprivate let TickMarkerSize = 15 as CGFloat
     
     fileprivate func LongestDigits(_ left : Double, right : Double) -> (length : Int, number : Double){
-        let leftLength = "\(left)".characters.count
-        let rightLength = "\(right)".characters.count
+        let leftLength = "\(left)".count
+        let rightLength = "\(right)".count
         return leftLength > rightLength ? (leftLength, left) : (rightLength, right)
     }
     
@@ -495,9 +495,9 @@ class GraphView: UIView {
         let attr_string = NSMutableAttributedString(string: functionText)
         let fontSize : CGFloat = 16
         if highlighted{
-            attr_string.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFont(ofSize: fontSize), range: NSRange(location: 0, length: expression.characters.count))
+            attr_string.addAttribute(NSAttributedStringKey.font, value: UIFont.boldSystemFont(ofSize: fontSize), range: NSRange(location: 0, length: expression.count))
         }else{
-            attr_string.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: fontSize), range: NSRange(location: 0, length: expression.characters.count))
+            attr_string.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: fontSize), range: NSRange(location: 0, length: expression.count))
         }
         return attr_string
     }
@@ -511,7 +511,7 @@ class GraphView: UIView {
             addSubview(FunctionLabels[i])
         }
         FunctionLabels[i].frame.origin = CGPoint(x: 20, y: 20 + 30 * i)
-        FunctionLabels[i].frame.size = CGSize(width: CGFloat(attributedText.string.characters.count) * 10, height: 30)
+        FunctionLabels[i].frame.size = CGSize(width: CGFloat(attributedText.string.count) * 10, height: 30)
         FunctionLabels[i].attributedText = attributedText
         FunctionLabels[i].textColor = color
         let tapAction = UITapGestureRecognizer(target: self, action: #selector(HandleTapLabel))
@@ -520,9 +520,9 @@ class GraphView: UIView {
         FunctionLabels[i].isUserInteractionEnabled = true
     }
     
-    internal func HandleTapLabel(_ sender : UITapGestureRecognizer){
+    @objc internal func HandleTapLabel(_ sender : UITapGestureRecognizer){
         if let text = (sender.view as? UILabel)?.text{
-            if let number = NumberFormatter().number(from: "\(text[text.characters.index(text.startIndex, offsetBy: 1)])")?.intValue{
+            if let number = NumberFormatter().number(from: "\(text[text.index(text.startIndex, offsetBy: 1)])")?.intValue{
                 lines[number].width = AxisWidth * 2
                 FunctionLabels[number].attributedText = LabelAttributedText(lines[number].Expression, index: number, highlighted: true)
                 
@@ -590,7 +590,7 @@ class GraphView: UIView {
         self.addGestureRecognizer(PinchGesture)
     }
     
-    func ManagePinch(_ gesture : UIPinchGestureRecognizer)
+    @objc func ManagePinch(_ gesture : UIPinchGestureRecognizer)
     {
         print("Velocity :\(gesture.velocity)")
         
@@ -615,7 +615,7 @@ class GraphView: UIView {
         addGestureRecognizer(PanGesture)
     }
     
-    func ManagePan(_ sender : UIPanGestureRecognizer)
+    @objc func ManagePan(_ sender : UIPanGestureRecognizer)
     {
         let translation = sender.translation(in: self)
         sender.setTranslation(CGPoint.zero, in: self)
