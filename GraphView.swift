@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol GraphViewControllerDelegate{
+    func GraphViewDidAppear(newXMax : Double, newXMin : Double, newXScale : Double, newYMax : Double, newYMin : Double, newYScale : Double)
+}
+
 protocol GraphViewDelegate{
     func RenderingStarted()
     func RenderingEnded(_ iterations : Int)
@@ -38,7 +42,7 @@ extension String{
 }
 
 @IBDesignable
-class GraphView: UIView {
+class GraphView: UIView, GraphViewControllerDelegate {
     
     override var bounds: CGRect{ didSet{ AllSet = true } }
     
@@ -394,26 +398,72 @@ class GraphView: UIView {
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
     override func draw(_ rect: CGRect) {
-        UIView.animate(withDuration: 0.5, animations: {
-            UIColor.black.set()
-            self.XAxis.stroke()
-            self.YAxis.stroke()
-            
-            for tick in self.y_ticks{
-                tick.draw()
-            }
-            for tick in self.x_ticks{
-                tick.draw()
-            }
-            
-            for line in self.lines { line.Draw() }
-            
-            //if !pointLabel.hidden { SetPointLabelWithLocation(pointLabel.frame.origin) }
-            
-            self.AllSet = false
-            
-            (self.delegate as? GraphViewDelegate)?.RenderingEnded(self.LastIterations)
-        })
+        UIColor.black.set()
+        self.XAxis.stroke()
+        self.YAxis.stroke()
+        
+        for tick in self.y_ticks{
+            tick.draw()
+        }
+        for tick in self.x_ticks{
+            tick.draw()
+        }
+        
+        for line in self.lines { line.Draw() }
+        
+        //if !pointLabel.hidden { SetPointLabelWithLocation(pointLabel.frame.origin) }
+        
+        self.AllSet = false
+        
+        (self.delegate as? GraphViewDelegate)?.RenderingEnded(self.LastIterations)
+    }
+        
+    func GraphViewDidAppear(newXMax : Double,
+                            newXMin : Double,
+                            newXScale : Double,
+                            newYMax : Double,
+                            newYMin : Double,
+                            newYScale : Double) {
+        
+        print("Updating parameters...")
+        
+        let newXMax_f = CGFloat(newXMax)
+        let newXMin_f = CGFloat(newXMin)
+        let newXScale_f = CGFloat(newXScale)
+        let newYMax_f = CGFloat(newYMax)
+        let newYMin_f = CGFloat(newYMin)
+        let newYScale_f = CGFloat(newYScale)
+        
+        var parameter_changed = false
+        
+        if newXMax_f != MaxX{
+            MaxX = newXMax_f
+            parameter_changed = true
+        }
+        if newXMin_f != MinX{
+            MinX = newXMin_f
+            parameter_changed = true
+        }
+        if newXScale_f != XScale{
+            XScale = newXScale_f
+            parameter_changed = true
+        }
+        if newYMax_f != MaxY{
+            MaxY = newYMax_f
+            parameter_changed = true
+        }
+        if newYMin_f != MinY{
+            MinY = newYMin_f
+            parameter_changed = true
+        }
+        if newYScale_f != YScale{
+            YScale = newYScale_f
+            parameter_changed = true
+        }
+        
+        if parameter_changed{
+            AllSet = true
+        }
     }
     
     fileprivate func TickFormatter() -> NumberFormatter{
@@ -605,7 +655,6 @@ class GraphView: UIView {
         MinY *= Scale
         
         AllSet = true
-        ReRender()
         
 //        print("Scale is \(Scale)")
     }
@@ -631,7 +680,6 @@ class GraphView: UIView {
         MaxY -= difference.y
         
         AllSet = true
-        ReRender()
     }
     
     //MARK: GraphModelDelegate

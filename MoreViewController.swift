@@ -32,8 +32,30 @@ class MoreViewController: UITableViewController {
     fileprivate let NamesForSection = [0 : ["X Max", "X Min", "X Scale"] , 1 : ["Y Max", "Y Min", "Y Scale"],
                                    2 : ["Y 1", "Y 2", "Y 3", "Y 4", "Y 5", "Y 6"] ]
     
+    private func initSettings(){
+        if Settings.getSaved("XMax") == nil{
+            Settings.setSaved("XMax", 10.0)
+        }
+        if Settings.getSaved("XMin") == nil{
+            Settings.setSaved("XMin", -10.0)
+        }
+        if Settings.getSaved("XScale") == nil{
+            Settings.setSaved("XScale", 1.0)
+        }
+        if Settings.getSaved("YMax") == nil{
+            Settings.setSaved("YMax", 10.0)
+        }
+        if Settings.getSaved("YMin") == nil{
+            Settings.setSaved("YMin", -10.0)
+        }
+        if Settings.getSaved("YScale") == nil{
+            Settings.setSaved("YScale", 1.0)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        initSettings()
         // Do any additional setup after loading the view.
     }
 
@@ -55,9 +77,26 @@ class MoreViewController: UITableViewController {
             if let NewValue = NumberFormatter().number(from: CurrentValue)?.doubleValue
             {
                 guard let cell = sender.superview?.superview as? MoreTableViewCell else { return }
-                guard let parameterName = cell.Label?.text else { return }
+                guard let parameterName = cell.Label?.text?.removeSpaces() else { return }
+                let current_value = Settings.getSavedOrDefaultDouble(parameterName, 1.0)
+                Settings.setSaved(parameterName, NewValue)
                 
-                Settings.setSaved(parameterName.removeSpaces(), NewValue)
+                if (parameterName == "XScale" || parameterName == "YScale") { //scale needs to be non-negative
+                    if NewValue < 0{
+                        sender.text = "\(current_value)"
+                        Settings.setSaved(parameterName, current_value)
+                    }
+                }else if (parameterName.hasPrefix("X")){                 //mins need to be smaller than max
+                    if Settings.XMin >= Settings.XMax{
+                        sender.text = "\(current_value)"
+                        Settings.setSaved(parameterName, current_value)
+                    }
+                }else if (parameterName.hasPrefix("Y")){
+                    if Settings.YMin >= Settings.YMax{
+                        sender.text = "\(current_value)"
+                        Settings.setSaved(parameterName, current_value)
+                    }
+                }
             }
             else
             {

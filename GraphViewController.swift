@@ -8,7 +8,9 @@
 
 import UIKit
 
-class GraphViewController: UIViewController, GraphViewDelegate {
+class GraphViewController: UIViewController {
+    
+    var delegate : GraphViewControllerDelegate?
     
     var debugging = false
     
@@ -17,8 +19,18 @@ class GraphViewController: UIViewController, GraphViewDelegate {
     @IBOutlet weak var spinner: UIActivityIndicatorView?
     var start = Date(timeIntervalSinceNow: 0)
 
+    override func viewWillAppear(_ animated: Bool) {
+        delegate?.GraphViewDidAppear(newXMax: Settings.XMax,
+                                     newXMin: Settings.XMin,
+                                     newXScale: Settings.XScale,
+                                     newYMax: Settings.YMax,
+                                     newYMin: Settings.YMin,
+                                     newYScale: Settings.YScale)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.delegate = graph
         spinner?.hidesWhenStopped = true
         debugging = true
         // Do any additional setup after loading the view.

@@ -74,7 +74,7 @@ class Settings{
         set {
             setSaved("YMax", newValue)
         }get{
-            return getSavedOrDefaultDouble("YMax", -10)
+            return getSavedOrDefaultDouble("YMax", 10)
         }
     }
     
