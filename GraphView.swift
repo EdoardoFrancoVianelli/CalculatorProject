@@ -15,6 +15,12 @@ protocol GraphViewControllerDelegate{
 protocol GraphViewDelegate{
     func RenderingStarted()
     func RenderingEnded(_ iterations : Int)
+    func minXDidChange(minX : CGFloat)
+    func maxXDidChange(maxX : CGFloat)
+    func xScaleDidChange(xScale : CGFloat)
+    func minYDidChange(minY : CGFloat)
+    func maxYDidChange(maxY : CGFloat)
+    func yScaleDidChange(yScale : CGFloat)
 }
 
 extension CGRect
@@ -35,41 +41,86 @@ extension CGRect
     }
 }
 
-extension String{
-    var Count : Int{
-        return self.count
-    }
-}
-
 @IBDesignable
 class GraphView: UIView, GraphViewControllerDelegate {
+    
+    private var FrameLimits = GraphBounds()
     
     override var bounds: CGRect{ didSet{ AllSet = true } }
     
     @IBInspectable
-    var MinX : CGFloat = -10.0
+    var MinX : CGFloat {
+        get{
+            return CGFloat(FrameLimits.MinX)
+        }set{
+            FrameLimits.MinX = Float(newValue)
+            (delegate as? GraphViewDelegate)?.minXDidChange(minX: MinX)
+        }
+    }
     
     @IBInspectable
-    var MaxX : CGFloat = 10.0
+    var MaxX : CGFloat {
+        get{
+            return CGFloat(FrameLimits.MaxX)
+        }
+        set{
+            FrameLimits.MaxX = Float(newValue)
+            (delegate as? GraphViewDelegate)?.maxXDidChange(maxX: MaxX)
+        }
+    }
     
     @IBInspectable
-    var MinY : CGFloat = -10.0
+    var MinY : CGFloat {
+        get{
+            return CGFloat(FrameLimits.MinY)
+        }
+        set{
+            FrameLimits.MinX = Float(newValue)
+            (delegate as? GraphViewDelegate)?.minYDidChange(minY: MinY)
+        }
+    }
     
     @IBInspectable
-    var MaxY : CGFloat = 10.0
+    var MaxY : CGFloat {
+        get{
+            return CGFloat(FrameLimits.MaxY)
+        }
+        set{
+            FrameLimits.MaxY = Float(newValue)
+            (delegate as? GraphViewDelegate)?.maxYDidChange(maxY: MaxY)
+        }
+    }
     
     @IBInspectable
     var AxisWidth : CGFloat = 1.0
     
     @IBInspectable
-    var XScale : CGFloat = 1.0
+    var XScale : CGFloat {
+        get{
+            return CGFloat(FrameLimits.XScale)
+        }
+        set{
+            FrameLimits.XScale = Float(newValue)
+            (delegate as? GraphViewDelegate)?.xScaleDidChange(xScale: XScale)
+        }
+    }
 
     @IBInspectable
-    var YScale : CGFloat = 1.0
+    var YScale : CGFloat {
+        get{
+            return CGFloat(FrameLimits.YScale)
+        }
+        set{
+            FrameLimits.YScale = Float(newValue)
+            (delegate as? GraphViewDelegate)?.yScaleDidChange(yScale: YScale)
+        }
+    }
     
     var AllSet : Bool = false{
         didSet {
-            AllSetChanged()
+            if AllSet {
+                ReRender()
+            }
         }
     }
     
@@ -85,8 +136,8 @@ class GraphView: UIView, GraphViewControllerDelegate {
             YAxis = ComputeYAxis(CGFloat(XPoint(0.0)), AxisWidth: AxisWidth, GraphHeight: frame.size.height)
             x_ticks = [GraphTick]()
             y_ticks = [GraphTick]()
-            ComputeXTicks(&x_ticks)
-            ComputeYTicks(&y_ticks)
+            ComputeXTicks(&x_ticks, x: true)
+            ComputeXTicks(&y_ticks, x: false)
             (lines, LastIterations) = ComputeEquations(["x", "x^2", "x^3"])
             self.setNeedsDisplay()
         }
@@ -254,8 +305,6 @@ class GraphView: UIView, GraphViewControllerDelegate {
     
     func Initialize()
     {
-        ConfigurePinchGesture()
-        ConfigurePanGesture()
         AddTapToShowPointInfo()
         AddTapToHidePointLabel()
         ConfigureMovePointLabel()
@@ -273,15 +322,13 @@ class GraphView: UIView, GraphViewControllerDelegate {
     
     fileprivate func OptimalSkippingFactor(_ min : CGFloat, max : CGFloat, y : Bool) -> CGFloat
     {
-        let greatestValue = (abs(min.description.Count) > abs(max.description.Count)) ? min : max
-        
+        let greatestValue = (abs(min.description.count) > abs(max.description.count)) ? min : max
         let locationOfGreatestValue = y ? YPoint(Double(greatestValue)) : XPoint(Double(greatestValue))
-        
         let attributedGreatestValue = NSAttributedString(string: greatestValue.description)
         let valueDimension = y ? ((attributedGreatestValue.size().height / 2) + 10) : ((attributedGreatestValue.size().width / 2) + 10)
         let greatestBounds : (lower : Double, upper : Double) = (locationOfGreatestValue - Double(valueDimension), locationOfGreatestValue + Double(valueDimension))
-        let lowerBoundPoint = CGFloat(RectXPoint(greatestBounds.lower))
-        let upperBoundPoint = CGFloat(RectXPoint(greatestBounds.upper))
+        let lowerBoundPoint = CGFloat(!y ? RectXPoint(greatestBounds.lower) : RectYPoint(greatestBounds.lower))
+        let upperBoundPoint = CGFloat(!y ? RectXPoint(greatestBounds.upper) : RectYPoint(greatestBounds.upper))
         let newSkippingFactor = abs(upperBoundPoint - lowerBoundPoint)
         print("Skipping factor\(round(newSkippingFactor))")
         return round(newSkippingFactor)
@@ -292,74 +339,54 @@ class GraphView: UIView, GraphViewControllerDelegate {
         return OptimalSkippingFactor(MinX, max: MaxX, y: false)
     }
     
-    fileprivate func ComputeXTicks(_ XTicks : inout [GraphTick]){
+    fileprivate func ComputeXTicks(_ Ticks : inout [GraphTick], x : Bool){
+        
+        let min = x ? MinX : MinY
+        let max = x ? MaxX : MaxY
+        let scale = x ? XScale : YScale
         
         var previous : GraphTick?
-        let Start = -(abs(MinX) - (abs(MinX).truncatingRemainder(dividingBy: XScale))) + 1
+        let Start = -(abs(min) - (abs(min).truncatingRemainder(dividingBy: scale))) + 1
         
         var iterations = 0
         var skippingFactor = ComputeOptimalSkippingFactor()
         if skippingFactor <= 0{
-            skippingFactor = XScale
+            skippingFactor = scale
         }
         print("The skipping factor is \(skippingFactor), starting at \(Start)")
         
-        for CurrentX in stride(from: Start, to: MaxX, by: skippingFactor){
-            let ScreenCoordinates = PointForCoordinates(Double(CurrentX), y: 0.0)
-            let CurrentTick = GraphTick(number: Double(CurrentX), y: false)
-            let StartPoint = CGPoint(x: ScreenCoordinates.x, y: ScreenCoordinates.y - TickMarkerSize / 2)
-            let EndPoint = CGPoint(x: StartPoint.x, y: StartPoint.y + TickMarkerSize)
-            CurrentTick.SetTickPath(StartPoint, end: EndPoint, width: AxisWidth)
-            CurrentTick.SetNumberLocation(CGPoint(x: EndPoint.x - CurrentTick.NumberFrame.size.width, y: EndPoint.y + 5))
+        for Current in stride(from: Start, to: max, by: skippingFactor){
+            let x_coord = x ? Double(Current) : 0.0
+            let y_coord = x ? 0.0 : Double(Current)
+            let ScreenCoordinates = PointForCoordinates(x_coord, y: y_coord)
+            let CurrentTick = GraphTick(number: x ? x_coord : y_coord, y: !x)
+            //TODO: modify from here
+            if x {
+                let StartPoint = CGPoint(x: ScreenCoordinates.x, y: ScreenCoordinates.y - TickMarkerSize / 2)
+                let EndPoint = CGPoint(x: StartPoint.x, y: StartPoint.y + TickMarkerSize)
+                CurrentTick.SetTickPath(StartPoint, end: EndPoint, width: AxisWidth)
+                CurrentTick.SetNumberLocation(CGPoint(x: EndPoint.x - CurrentTick.NumberFrame.size.width, y: EndPoint.y + 5))
+            } else {
+                let StartPoint = CGPoint(x: ScreenCoordinates.x - TickMarkerSize / 2, y: ScreenCoordinates.y)
+                let EndPoint = CGPoint(x: StartPoint.x + TickMarkerSize, y: StartPoint.y)
+                CurrentTick.SetTickPath(StartPoint, end: EndPoint, width: AxisWidth)
+                CurrentTick.SetNumberLocation(CGPoint(x: EndPoint.x + TickMarkerSize / 2 , y: EndPoint.y - CurrentTick.NumberFrame.size.height / 2))
+            }
             
             if let prev = previous{
                 //let xDifference = abs((prev.NumberFrame.origin.x + prev.NumberFrame.size.width) - CurrentTick.NumberFrame.origin.x)
                 if !prev.NumberFrame.intersects(CurrentTick.NumberFrame){
-                    XTicks.append(CurrentTick)
+                    Ticks.append(CurrentTick)
                     previous = CurrentTick
                 }
             }else{
-                XTicks.append(CurrentTick)
+                Ticks.append(CurrentTick)
                 previous = CurrentTick
             }
             iterations += 1
         }
         
         print("Iterations for x ticks is \(iterations)")
-    }
-    
-    fileprivate func ComputeYTicks(_ YTicks : inout [GraphTick]){
-        var previous : GraphTick?
-        let Start = -(abs(MinY) - (abs(MinY).truncatingRemainder(dividingBy: YScale))) + 1
-        var iterations = 0
-        
-        var skippingFactor = OptimalSkippingFactor(MinY, max: MaxY, y: true)
-        if skippingFactor <= 0{
-            skippingFactor = YScale
-        }
-
-        for CurrentY in stride(from: Start, to: MaxY, by: skippingFactor){
-            let ScreenCoordinates = PointForCoordinates(0.0, y: Double(CurrentY))
-            let CurrentTick = GraphTick(number: Double(CurrentY), y: true)
-            let StartPoint = CGPoint(x: ScreenCoordinates.x - TickMarkerSize / 2, y: ScreenCoordinates.y)
-            let EndPoint = CGPoint(x: StartPoint.x + TickMarkerSize, y: StartPoint.y)
-            CurrentTick.SetTickPath(StartPoint, end: EndPoint, width: AxisWidth)
-            CurrentTick.SetNumberLocation(CGPoint(x: EndPoint.x + TickMarkerSize / 2 , y: EndPoint.y - CurrentTick.NumberFrame.size.height / 2))
-            if let prev = previous{
-                let yDifference = prev.NumberFrame.origin.y - (CurrentTick.NumberFrame.origin.y + CurrentTick.NumberFrame.height)
-                if !prev.NumberFrame.intersects(CurrentTick.NumberFrame) && yDifference >= 10{
-                    YTicks.append(CurrentTick)
-                    previous = CurrentTick
-                }else if yDifference < 10{
-                    
-                }
-            }else{
-                YTicks.append(CurrentTick)
-                previous = CurrentTick
-            }
-            iterations += 1
-        }
-        print("Y tick iterations is \(iterations)")
     }
     
     fileprivate func ComputeEquations(_ equations : [String]) -> ([Line], iterations : Int)
@@ -526,13 +553,24 @@ class GraphView: UIView, GraphViewControllerDelegate {
     
     fileprivate func XPoint(_ x : Double) -> Double
     {
-        return XAxisStartLocation() + (Double(XTickWidth) * x)
+        let unadjusted_point = (XAxisStartLocation() + (Double(XTickWidth) * x))
+        return unadjusted_point
     }
     
     fileprivate func YPoint(_ y : Double) -> Double
     {
         let start = YAxisSstartLocation()
-        return start - (Double(YTickHeight) * y)
+        let unadjusted_point = (start - (Double(YTickHeight) * y))
+        
+        return unadjusted_point
+        /*
+        
+        if y < 0{
+            return unadjusted_point * Double(YScale)
+        }
+        
+        return unadjusted_point / Double(YScale)
+         */
     }
     
     internal func PointForCoordinates(_ x : Double, y : Double) -> CGPoint
@@ -631,62 +669,6 @@ class GraphView: UIView, GraphViewControllerDelegate {
     func ZoomOut(){
         Zoom(0.5)
     }
-    
-    //MARK: Gesture Stuff
-    
-    func ConfigurePinchGesture()
-    {
-        let PinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(ManagePinch))
-        self.addGestureRecognizer(PinchGesture)
-    }
-    
-    @objc func ManagePinch(_ gesture : UIPinchGestureRecognizer)
-    {
-        print("Velocity :\(gesture.velocity)")
-        
-        if gesture.state == UIGestureRecognizerState.failed { return }
-
-        let Scale = 1 / gesture.scale
-        
-        
-        MaxX *= Scale
-        MaxY *= Scale
-        MinX *= Scale
-        MinY *= Scale
-        
-        AllSet = true
-        
-//        print("Scale is \(Scale)")
-    }
-    
-    fileprivate func ConfigurePanGesture() {
-        let PanGesture = UIPanGestureRecognizer(target: self, action: #selector(ManagePan))
-        addGestureRecognizer(PanGesture)
-    }
-    
-    @objc func ManagePan(_ sender : UIPanGestureRecognizer)
-    {
-        let translation = sender.translation(in: self)
-        sender.setTranslation(CGPoint.zero, in: self)
-        let startPoint = CoordinatesForPoint(point: CGPoint.zero)
-        let endPoint = CoordinatesForPoint(point: translation)
-        
-        let difference = CGPoint(x: endPoint.x - startPoint.x, y: endPoint.y - startPoint.y)
-        
-        MaxX -= difference.x
-        MinX -= difference.x
-    
-        MinY -= difference.y
-        MaxY -= difference.y
-        
-        AllSet = true
-    }
-    
-    //MARK: GraphModelDelegate
-    
-    func AllSetChanged() {
-        ReRender()
-    }
 }
 
 func + (left : CGPoint, right : CGPoint) -> CGPoint
@@ -718,6 +700,63 @@ func +- (left : Double, right : Double) -> (left : Double, right : Double){
 
 
 
+
+
+
+
+/*
+ 
+ //MARK: Gesture Stuff
+ 
+ func ConfigurePinchGesture()
+ {
+ let PinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(ManagePinch))
+ self.addGestureRecognizer(PinchGesture)
+ }
+ 
+ @objc func ManagePinch(_ gesture : UIPinchGestureRecognizer)
+ {
+ print("Velocity :\(gesture.velocity)")
+ 
+ if gesture.state == UIGestureRecognizerState.failed { return }
+ 
+ let Scale = 1 / gesture.scale
+ 
+ 
+ MaxX *= Scale
+ MaxY *= Scale
+ MinX *= Scale
+ MinY *= Scale
+ 
+ AllSet = true
+ 
+ //        print("Scale is \(Scale)")
+ }
+ 
+ fileprivate func ConfigurePanGesture() {
+ let PanGesture = UIPanGestureRecognizer(target: self, action: #selector(ManagePan))
+ addGestureRecognizer(PanGesture)
+ }
+ 
+ @objc func ManagePan(_ sender : UIPanGestureRecognizer)
+ {
+ let translation = sender.translation(in: self)
+ sender.setTranslation(CGPoint.zero, in: self)
+ let startPoint = CoordinatesForPoint(point: CGPoint.zero)
+ let endPoint = CoordinatesForPoint(point: translation)
+ 
+ let difference = CGPoint(x: endPoint.x - startPoint.x, y: endPoint.y - startPoint.y)
+ 
+ MaxX -= difference.x
+ MinX -= difference.x
+ 
+ MinY -= difference.y
+ MaxY -= difference.y
+ 
+ AllSet = true
+ }
+ 
+ */
 
 
 

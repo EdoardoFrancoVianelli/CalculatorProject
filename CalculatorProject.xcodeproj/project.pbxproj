@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A87D1FE220190E22008459F6 /* GraphBounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D1FE120190E22008459F6 /* GraphBounds.swift */; };
+		A87D1FE420198481008459F6 /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D1FE320198481008459F6 /* RoundedView.swift */; };
 		A8AD8AF6200F0B0A00CB5258 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AD8AF5200F0B0A00CB5258 /* Settings.swift */; };
 		C867EDC51D11A777003D8395 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867EDC41D11A777003D8395 /* MoreViewController.swift */; };
 		C867EDC71D1C0963003D8395 /* NumericalConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867EDC61D1C0963003D8395 /* NumericalConversions.swift */; };
@@ -45,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A87D1FE120190E22008459F6 /* GraphBounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBounds.swift; sourceTree = "<group>"; };
+		A87D1FE320198481008459F6 /* RoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		A8AD8AF5200F0B0A00CB5258 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		C867EDC41D11A777003D8395 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		C867EDC61D1C0963003D8395 /* NumericalConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalConversions.swift; sourceTree = "<group>"; };
@@ -110,6 +114,7 @@
 		C8A2842D1D0C0C900077F1FD = {
 			isa = PBXGroup;
 			children = (
+				A87D1FE320198481008459F6 /* RoundedView.swift */,
 				C8F6B5BD1D48F4D100AA393D /* NSObject+Constants.h */,
 				C8F6B5BE1D48F4D100AA393D /* NSObject+Constants.m */,
 				C8F6B5B61D48F23000AA393D /* CalculatorProject-Bridging-Header.h */,
@@ -172,6 +177,7 @@
 				C8A284671D0C0CD10077F1FD /* GraphViewController.swift */,
 				C8A284691D0C0CE60077F1FD /* GraphView.swift */,
 				C89AA4341D51DD8100BE57B9 /* GraphElements.swift */,
+				A87D1FE120190E22008459F6 /* GraphBounds.swift */,
 			);
 			name = "GraphView MVC";
 			sourceTree = "<group>";
@@ -329,7 +335,9 @@
 				C8A284681D0C0CD10077F1FD /* GraphViewController.swift in Sources */,
 				C8A2846D1D0C10BA0077F1FD /* CalculatorViewController.swift in Sources */,
 				C8A2846A1D0C0CE60077F1FD /* GraphView.swift in Sources */,
+				A87D1FE420198481008459F6 /* RoundedView.swift in Sources */,
 				C867EDC51D11A777003D8395 /* MoreViewController.swift in Sources */,
+				A87D1FE220190E22008459F6 /* GraphBounds.swift in Sources */,
 				C8F6B5BF1D48F4D100AA393D /* NSObject+Constants.m in Sources */,
 				C8A284721D0C10E90077F1FD /* Calculator.swift in Sources */,
 				C867EDC71D1C0963003D8395 /* NumericalConversions.swift in Sources */,
@@ -438,6 +446,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -485,6 +494,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};

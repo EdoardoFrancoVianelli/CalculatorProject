@@ -8,7 +8,38 @@
 
 import UIKit
 
-class GraphViewController: UIViewController {
+class GraphViewController: UIViewController, GraphViewDelegate {
+    
+    @IBOutlet weak var menuView: RoundedView!
+    @IBOutlet weak var roundView: RoundedView!
+    
+    @IBAction func toggleMenu(_ sender: Any) {
+        guard let button = sender as? UIButton else {
+            return
+        }
+        let menuToggled = !(self.roundView.transform == .identity)
+        let stretchAmount : CGFloat = menuToggled ? -168 : 168
+        let image = menuToggled ? UIImage(named: "Left Arrow") : UIImage(named: "Right Arrow")
+        UIView.animate(withDuration: 0.75, animations: {
+            if !menuToggled{
+                let xStretch : CGFloat = 2*(self.menuView.frame.size.width + stretchAmount) / (button.frame.size.width)
+                let yStretch : CGFloat = xStretch
+                self.roundView.transform = CGAffineTransform.init(scaleX: xStretch, y: yStretch)
+            }else{
+                self.roundView.transform = .identity
+            }
+            self.menuView.frame.origin.x -= stretchAmount
+            self.menuView.frame.size.width += stretchAmount
+        }, completion: {
+            
+            (argument : Bool) in
+            
+                UIView.animate(withDuration: 0.5, animations: {
+                    button.setBackgroundImage(image, for: .normal)
+                })
+            
+        })
+    }
     
     var delegate : GraphViewControllerDelegate?
     
@@ -30,6 +61,7 @@ class GraphViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.graph.delegate = self
         self.delegate = graph
         spinner?.hidesWhenStopped = true
         debugging = true
@@ -91,6 +123,30 @@ class GraphViewController: UIViewController {
     func RenderingEnded(_ iterations : Int){
         let timeTaken = Date().timeIntervalSince(start)
         print("Time taken is \(timeTaken)")
+    }
+    
+    func minXDidChange(minX : CGFloat){
+        Settings.XMin = Double(minX)
+    }
+    
+    func maxXDidChange(maxX : CGFloat){
+        Settings.XMax = Double(maxX)
+    }
+    
+    func xScaleDidChange(xScale : CGFloat){
+        Settings.XScale = Double(xScale)
+    }
+    
+    func minYDidChange(minY : CGFloat){
+        Settings.YMin = Double(minY)
+    }
+    
+    func maxYDidChange(maxY : CGFloat){
+        Settings.YMax = Double(maxY)
+    }
+    
+    func yScaleDidChange(yScale : CGFloat){
+        Settings.YScale = Double(yScale)
     }
     
     /*
