@@ -18,7 +18,7 @@ class GraphViewController: UIViewController, GraphViewDelegate {
             return
         }
         let menuToggled = !(self.roundView.transform == .identity)
-        let stretchAmount : CGFloat = menuToggled ? -168 : 168
+        let stretchAmount : CGFloat = menuToggled ? -240 : 240
         let image = menuToggled ? UIImage(named: "Left Arrow") : UIImage(named: "Right Arrow")
         UIView.animate(withDuration: 0.75, animations: {
             if !menuToggled{
