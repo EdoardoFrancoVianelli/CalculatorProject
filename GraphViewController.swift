@@ -74,7 +74,7 @@ class GraphViewController: UIViewController, GraphViewDelegate {
     }
     
     @IBAction func MoveGraphUp() {
-        graph.MoveDown()
+        graph.MoveUp()
     }
     
     @IBAction func MoveGraphRight() {
@@ -86,7 +86,7 @@ class GraphViewController: UIViewController, GraphViewDelegate {
     }
     
     @IBAction func MoveGraphDown() {
-        graph.MoveUp()
+        graph.MoveDown()
     }
     
     @IBAction func ZoomIn() {

@@ -75,7 +75,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
             return CGFloat(FrameLimits.MinY)
         }
         set{
-            FrameLimits.MinX = Float(newValue)
+            FrameLimits.MinY = Float(newValue)
             (delegate as? GraphViewDelegate)?.minYDidChange(minY: MinY)
         }
     }
