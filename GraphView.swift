@@ -299,6 +299,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
     }
     
     override func layoutSubviews() {
+        super.layoutSubviews()
         AllSet = true
     }
     

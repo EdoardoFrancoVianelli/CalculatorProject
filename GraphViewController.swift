@@ -13,49 +13,76 @@ class GraphViewController: UIViewController, GraphViewDelegate {
     @IBOutlet weak var menuView: RoundedView!
     @IBOutlet weak var roundView: RoundedView!
     @IBOutlet weak var pannableView: UIView!
+    @IBOutlet weak var pannableMenuToggleButton: UIButton!
+    @IBOutlet weak var toggleNavigationMenuButton: UIButton!
     
     var pannableMenuToggled = false
     @IBAction func toggleOptionMenu(_ sender: UIButton) {
+        toggleOptionMenue(toggle: !pannableMenuToggled, sender: sender)
+    }
+    
+    func toggleOptionMenue(toggle : Bool, sender : UIButton){
         UIView.animate(withDuration: 0.5, animations: {
-            if !self.pannableMenuToggled{
+            if toggle{
                 self.pannableView.frame.origin.x = self.view.frame.size.width - self.pannableView.frame.size.width
+                self.graph.frame.origin.x = self.pannableView.frame.origin.x - self.graph.frame.size.width
             }else{
                 self.pannableView.frame.origin.x = self.view.frame.size.width
+                self.graph.frame.origin.x = 0
             }
             sender.frame.origin.x = self.pannableView.frame.origin.x - sender.frame.size.width - 8
-            if self.pannableMenuToggled{
-                self.graph.frame.origin.x = 0
-            }else{
-                self.graph.frame.origin.x = self.pannableView.frame.origin.x - self.graph.frame.size.width
-            }
+            self.menuView.frame.origin.x = self.pannableView.frame.origin.x - self.menuView.frame.size.width - 8
         })
-        pannableMenuToggled = !pannableMenuToggled
+        pannableMenuToggled = toggle
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        toggleOptionMenue(toggle: false, sender: pannableMenuToggleButton)
+        toggleNavigationMenu(button: toggleNavigationMenuButton, toggleMenu: false)
     }
     
     @IBAction func toggleNavigationMenu(_ sender: Any) {
-        guard let button = sender as? UIButton else {
-            return
+        let menuToggled = (self.roundView.transform == .identity)
+        toggleNavigationMenu(button: sender as! UIButton, toggleMenu: menuToggled)
+    }
+    
+    func navigationMenuSize(toggled : Bool) -> CGFloat{
+        
+        if !toggled{
+            return 40
         }
-        let menuToggled = !(self.roundView.transform == .identity)
-        let stretchAmount : CGFloat = menuToggled ? -240 : 240
-        let image = menuToggled ? UIImage(named: "Left Arrow") : UIImage(named: "Right Arrow")
+        
+        var total : CGFloat = 0.0
+        
+        for view in self.menuView.subviews{
+            if view is UIButton{
+                total += view.frame.size.width
+            }
+        }
+        
+        return total
+    }
+    
+    func toggleNavigationMenu(button : UIButton, toggleMenu : Bool){
+        let image = toggleMenu ? UIImage(named: "Right Arrow") : UIImage(named: "Left Arrow")
+        let xStretch : CGFloat = 20//2*(self.menuView.frame.size.width + stretchAmount) / (button.frame.size.width)
+        let yStretch : CGFloat = xStretch
         UIView.animate(withDuration: 0.75, animations: {
-            if !menuToggled{
-                let xStretch : CGFloat = 2*(self.menuView.frame.size.width + stretchAmount) / (button.frame.size.width)
-                let yStretch : CGFloat = xStretch
+            if toggleMenu{
                 self.roundView.transform = CGAffineTransform.init(scaleX: xStretch, y: yStretch)
             }else{
                 self.roundView.transform = .identity
             }
-            self.menuView.frame.origin.x -= stretchAmount
-            self.menuView.frame.size.width += stretchAmount
+            self.menuView.frame.size.width = self.navigationMenuSize(toggled: toggleMenu)
+            self.menuView.frame.origin.x = self.pannableView.frame.origin.x - self.menuView.frame.size.width - 8
         }, completion: {
             
             (argument : Bool) in
             
-                UIView.animate(withDuration: 0.5, animations: {
-                    button.setBackgroundImage(image, for: .normal)
-                })
+            UIView.animate(withDuration: 0.5, animations: {
+                button.setBackgroundImage(image, for: .normal)
+            })
             
         })
     }
