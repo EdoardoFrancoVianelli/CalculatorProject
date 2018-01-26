@@ -188,13 +188,13 @@ class GraphView: UIView, GraphViewControllerDelegate {
     fileprivate func GetXTickWidth() -> CGFloat
     {
         let MinMaxDifference = XMinMaxDifference()
-        return frame.size.width / MinMaxDifference
+        return self.bounds.size.width / MinMaxDifference
     }
     
     fileprivate func GetYTickHeight() -> CGFloat
     {
         let MinMaxDifference = YMinMaxDifference()
-        return frame.size.height / MinMaxDifference
+        return self.bounds.size.height / MinMaxDifference
     }
     
     fileprivate func RenewTickDimensions()
@@ -296,6 +296,10 @@ class GraphView: UIView, GraphViewControllerDelegate {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         Initialize()
+    }
+    
+    override func layoutSubviews() {
+        AllSet = true
     }
     
     override init(frame: CGRect) {
@@ -401,7 +405,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
             
             let calculator = ExpressionEvaluator(expression: equation)
             
-            let num_ticks = self.frame.size.width / 4
+            let num_ticks = self.bounds.size.width / 4
             let increment = (MaxX - MinX) / num_ticks
         
             for x in stride(from: Double(MinX), to: Double(MaxX), by: Double(increment)){
