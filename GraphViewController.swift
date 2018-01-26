@@ -12,8 +12,27 @@ class GraphViewController: UIViewController, GraphViewDelegate {
     
     @IBOutlet weak var menuView: RoundedView!
     @IBOutlet weak var roundView: RoundedView!
+    @IBOutlet weak var pannableView: UIView!
     
-    @IBAction func toggleMenu(_ sender: Any) {
+    var pannableMenuToggled = false
+    @IBAction func toggleOptionMenu(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.5, animations: {
+            if !self.pannableMenuToggled{
+                self.pannableView.frame.origin.x = self.view.frame.size.width - self.pannableView.frame.size.width
+            }else{
+                self.pannableView.frame.origin.x = self.view.frame.size.width
+            }
+            sender.frame.origin.x = self.pannableView.frame.origin.x - sender.frame.size.width - 8
+            if self.pannableMenuToggled{
+                self.graph.frame.origin.x = 0
+            }else{
+                self.graph.frame.origin.x = self.pannableView.frame.origin.x - self.graph.frame.size.width
+            }
+        })
+        pannableMenuToggled = !pannableMenuToggled
+    }
+    
+    @IBAction func toggleNavigationMenu(_ sender: Any) {
         guard let button = sender as? UIButton else {
             return
         }
