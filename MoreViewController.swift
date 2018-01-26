@@ -29,8 +29,8 @@ class MoreViewController: UITableViewController {
                                    "Y5" : "x^5",
                                    "Y6" : "x^6"]
     fileprivate let CellIdentifier = "MoreCell"
-    fileprivate let NamesForSection = [0 : ["X Max", "X Min", "X Scale"] , 1 : ["Y Max", "Y Min", "Y Scale"],
-                                   2 : ["Y 1", "Y 2", "Y 3", "Y 4", "Y 5", "Y 6"] ]
+    fileprivate let NamesForSection = [1 : ["X Max", "X Min", "X Scale"] , 2 : ["Y Max", "Y Min", "Y Scale"],
+                                   3 : ["Y 1", "Y 2", "Y 3", "Y 4", "Y 5", "Y 6"] ]
     
     private func initSettings(){
         if Settings.getSaved("XMax") == nil{
@@ -122,16 +122,26 @@ class MoreViewController: UITableViewController {
     }
     */
 
+    @objc func confirmSettings(){
+        print("Confirmed")
+    }
+    
+    @objc func cancelSettings(){
+        print("Cancelled")
+    }
+    
     
     //MARK: UITableViewDelegate and Data Source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0, 1:
+        case 0:
+            return 1
+        case 1, 2:
             return 3
         default:
             return 6
@@ -141,10 +151,12 @@ class MoreViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "X Parameters"
+            return ""
         case 1:
-            return "Y Parameters"
+            return "X Parameters"
         case 2:
+            return "Y Parameters"
+        case 3:
             return "Functions"
         default:
             return "Error"
@@ -152,8 +164,10 @@ class MoreViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let currentCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as? MoreTableViewCell
-        {
+        if indexPath.section > 0{
+            guard let currentCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as? MoreTableViewCell else{
+                return UITableViewCell()
+            }
             if let Names = NamesForSection[indexPath.section]
             {
                 currentCell.Label.text = Names[indexPath.row]
@@ -166,9 +180,14 @@ class MoreViewController: UITableViewController {
                 currentCell.Label.text = "Error"
             }
             return currentCell
+        }else{
+            guard let currentCell = tableView.dequeueReusableCell(withIdentifier: "ConfirmCell", for: indexPath) as? ConfirmCellTableViewCell else {
+                return UITableViewCell()
+            }
+            currentCell.cancelButton?.addTarget(self, action: #selector(MoreViewController.cancelSettings), for: UIControlEvents.touchUpInside)
+            currentCell.confirmButton?.addTarget(self, action: #selector(MoreViewController.confirmSettings), for: UIControlEvents.touchUpInside)
+            return currentCell
         }
-        
-        return UITableViewCell()
     }
     
 }

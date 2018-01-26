@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GraphViewController: UIViewController, GraphViewDelegate {
+class GraphViewController: UIViewController, GraphViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var menuView: RoundedView!
     @IBOutlet weak var roundView: RoundedView!
@@ -204,5 +204,62 @@ class GraphViewController: UIViewController, GraphViewDelegate {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    //MARK: Table View Data Source and Delegate
+    
+    let options : [(title : String, subtitle : String)] = [("Settings","Graph range settings")]
+    let optionImages = [UIImage(named:"Settings")]
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if (section == 0){
+            return "Information"
+        }else {
+            return "Settings"
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return options.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "OptionsMenuCell", for: indexPath)
+        
+        if indexPath.section == 0{
+            cell.textLabel?.text = "Grapher"
+            cell.detailTextLabel?.text = "Version 1.0"
+        }else{
+            cell.textLabel?.text = options[indexPath.row].title
+            cell.detailTextLabel?.numberOfLines = 2
+            cell.detailTextLabel?.text = options[indexPath.row].subtitle
+            cell.imageView?.image = optionImages[indexPath.row]
+        }
+        return cell
+    }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.section == 1{
+            if indexPath.row == 0{
+                let segueIdentifier = "rangesSetterSegue"
+                toggleOptionMenue(toggle: false, sender: pannableMenuToggleButton)
+                toggleNavigationMenu(button: toggleNavigationMenuButton, toggleMenu: false)
+                self.performSegue(withIdentifier: segueIdentifier, sender: self)
+            }
+        }
+    }
+    
 }
+
+
+
+
+
+
+
