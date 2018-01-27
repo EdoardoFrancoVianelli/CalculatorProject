@@ -123,10 +123,12 @@ class MoreViewController: UITableViewController {
     */
 
     @objc func confirmSettings(){
+        dismiss(animated: true, completion: nil)
         print("Confirmed")
     }
     
     @objc func cancelSettings(){
+        dismiss(animated: true, completion: nil)
         print("Cancelled")
     }
     
