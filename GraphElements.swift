@@ -12,20 +12,21 @@ import UIKit
 class GraphTick{
     
     fileprivate var _number = 0.0
-    fileprivate var _number_location = CGPoint.zero{
+    fileprivate var _number_location : CGPoint? {
         didSet{
             AttributedNumber = NSAttributedString(string: NumberString)
         }
     }
     fileprivate var _tick_path = UIBezierPath()
     fileprivate var y_tick = false
-    fileprivate var AttributedNumber = NSAttributedString(string: ""){
+    fileprivate var AttributedNumber : NSAttributedString? = NSAttributedString(string: ""){
         didSet{
-            var origin = CGPoint(x: _number_location.x - AttributedNumber.size().width / 2, y: _number_location.y)
+            guard let NumberLocation = _number_location else { return }
+            var origin = CGPoint(x: NumberLocation.x - AttributedNumber!.size().width / 2, y: NumberLocation.y)
             if y_tick{
-                origin = CGPoint(x: _number_location.x, y: _number_location.y - AttributedNumber.size().height / 2)
+                origin = CGPoint(x: NumberLocation.x, y: NumberLocation.y - AttributedNumber!.size().height / 2)
             }
-            num_frame = CGRect(origin: origin, size: AttributedNumber.size())
+            num_frame = CGRect(origin: origin, size: AttributedNumber!.size())
         }
     }
     fileprivate var num_frame   = CGRect.zero
@@ -33,7 +34,7 @@ class GraphTick{
     var NumberFrame : CGRect { return num_frame }
     var NumberString : String { return TickFormatter().string(from: NSNumber(value: _number as Double))! }
     var TickPath : UIBezierPath { return _tick_path }
-    var NumberLocation : CGPoint { return _number_location }
+    var NumberLocation : CGPoint? { return _number_location }
     var Number : Double { return _number }
     
     init(number : Double, y : Bool) {
@@ -49,11 +50,11 @@ class GraphTick{
     
     func draw(){
         UIColor.black.set()
-        AttributedNumber.draw(at: NumberFrame.origin)
+        AttributedNumber?.draw(at: NumberFrame.origin)
         TickPath.stroke()
     }
     
-    func SetNumberLocation(_ location : CGPoint){
+    func SetNumberLocation(_ location : CGPoint?){
         _number_location = location
     }
     

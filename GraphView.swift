@@ -136,8 +136,8 @@ class GraphView: UIView, GraphViewControllerDelegate {
             YAxis = ComputeYAxis(CGFloat(XPoint(0.0)), AxisWidth: AxisWidth, GraphHeight: frame.size.height)
             x_ticks = [GraphTick]()
             y_ticks = [GraphTick]()
-            ComputeXTicks(&x_ticks, x: true)
-            ComputeXTicks(&y_ticks, x: false)
+            ComputeTicks(&x_ticks, x: true)
+            ComputeTicks(&y_ticks, x: false)
             (lines, LastIterations) = ComputeEquations(["x", "x^2", "x^3"])
             self.setNeedsDisplay()
         }
@@ -317,8 +317,6 @@ class GraphView: UIView, GraphViewControllerDelegate {
         AllSet = true
     }
     
-    fileprivate let TickMarkerSize = 15 as CGFloat
-    
     fileprivate func LongestDigits(_ left : Double, right : Double) -> (length : Int, number : Double){
         let leftLength = "\(left)".count
         let rightLength = "\(right)".count
@@ -344,14 +342,14 @@ class GraphView: UIView, GraphViewControllerDelegate {
         return OptimalSkippingFactor(MinX, max: MaxX, y: false)
     }
     
-    fileprivate func ComputeXTicks(_ Ticks : inout [GraphTick], x : Bool){
+    fileprivate func ComputeTicks(_ Ticks : inout [GraphTick], x : Bool){
         
         let min = x ? MinX : MinY
         let max = x ? MaxX : MaxY
         let scale = x ? XScale : YScale
         
         var previous : GraphTick?
-        let Start = -(abs(min) - (abs(min).truncatingRemainder(dividingBy: scale))) + 1
+        let Start = -(abs(min) - (abs(min).truncatingRemainder(dividingBy: scale)))// + 1
         
         var iterations = 0
         var skippingFactor = ComputeOptimalSkippingFactor()
@@ -360,27 +358,43 @@ class GraphView: UIView, GraphViewControllerDelegate {
         }
         print("The skipping factor is \(skippingFactor), starting at \(Start)")
         
-        for Current in stride(from: Start, to: max, by: skippingFactor){
+        if x{
+            
+        }
+        
+        for Current in stride(from: Start, to: max, by: skippingFactor / 5){
+            
+            if Current == 0{
+                iterations += 1
+                continue
+            }
+            
             let x_coord = x ? Double(Current) : 0.0
             let y_coord = x ? 0.0 : Double(Current)
             let ScreenCoordinates = PointForCoordinates(x_coord, y: y_coord)
             let CurrentTick = GraphTick(number: x ? x_coord : y_coord, y: !x)
             //TODO: modify from here
+            let hasNumber = (iterations % 5 == 0)
+            let standardSize : CGFloat = 15
+            let TickMarkerSize : CGFloat = hasNumber ? standardSize : standardSize / 4
             if x {
                 let StartPoint = CGPoint(x: ScreenCoordinates.x, y: ScreenCoordinates.y - TickMarkerSize / 2)
                 let EndPoint = CGPoint(x: StartPoint.x, y: StartPoint.y + TickMarkerSize)
                 CurrentTick.SetTickPath(StartPoint, end: EndPoint, width: AxisWidth)
-                CurrentTick.SetNumberLocation(CGPoint(x: EndPoint.x - CurrentTick.NumberFrame.size.width, y: EndPoint.y + 5))
+                if hasNumber{
+                    CurrentTick.SetNumberLocation(CGPoint(x: EndPoint.x - CurrentTick.NumberFrame.size.width, y: EndPoint.y + 5))
+                }
             } else {
                 let StartPoint = CGPoint(x: ScreenCoordinates.x - TickMarkerSize / 2, y: ScreenCoordinates.y)
                 let EndPoint = CGPoint(x: StartPoint.x + TickMarkerSize, y: StartPoint.y)
                 CurrentTick.SetTickPath(StartPoint, end: EndPoint, width: AxisWidth)
-                CurrentTick.SetNumberLocation(CGPoint(x: EndPoint.x + TickMarkerSize / 2 , y: EndPoint.y - CurrentTick.NumberFrame.size.height / 2))
+                if hasNumber {
+                    CurrentTick.SetNumberLocation(CGPoint(x: EndPoint.x + TickMarkerSize / 2 , y: EndPoint.y - CurrentTick.NumberFrame.size.height / 2))
+                }
             }
-            
             if let prev = previous{
                 //let xDifference = abs((prev.NumberFrame.origin.x + prev.NumberFrame.size.width) - CurrentTick.NumberFrame.origin.x)
-                if !prev.NumberFrame.intersects(CurrentTick.NumberFrame){
+                if !prev.NumberFrame.intersects(CurrentTick.NumberFrame) || !hasNumber{
                     Ticks.append(CurrentTick)
                     previous = CurrentTick
                 }
@@ -417,7 +431,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
             }
             
             ResultingEquations.append(CurrentEquation)
-            UpdateFunctionLabel(calculator.Expression, color: CurrentEquation.Color, i: i)
+            //UpdateFunctionLabel(calculator.Expression, color: CurrentEquation.Color, i: i)
         }
         
         print("\(num) iterations to render all functions")
@@ -603,7 +617,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
             FunctionLabels.append(UILabel())
             addSubview(FunctionLabels[i])
         }
-        FunctionLabels[i].frame.origin = CGPoint(x: 20, y: 20 + 30 * i)
+        FunctionLabels[i].frame.origin = CGPoint(x: 10, y: 20 + 25 * i)
         FunctionLabels[i].frame.size = CGSize(width: CGFloat(attributedText.string.count) * 10, height: 30)
         FunctionLabels[i].attributedText = attributedText
         FunctionLabels[i].textColor = color

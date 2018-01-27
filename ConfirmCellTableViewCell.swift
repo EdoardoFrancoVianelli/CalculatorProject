@@ -10,12 +10,23 @@ import UIKit
 
 class ConfirmCellTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var cancelBackground: UIView!
+    @IBOutlet weak var confirmBackground: UIView!
     @IBOutlet weak var cancelButton : UIButton?
     @IBOutlet weak var confirmButton : UIButton?
+    
+    @objc func dummyTapGesture(){
+        
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dummyTapGesture))
+        confirmBackground.addGestureRecognizer(tap)
+        cancelBackground.addGestureRecognizer(tap)
+        confirmBackground.isUserInteractionEnabled = true
+        cancelBackground.isUserInteractionEnabled = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
