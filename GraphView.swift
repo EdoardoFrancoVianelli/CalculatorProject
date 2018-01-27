@@ -92,7 +92,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
     }
     
     @IBInspectable
-    var AxisWidth : CGFloat = 1.0
+    var AxisWidth : CGFloat = 4.0
     
     @IBInspectable
     var XScale : CGFloat {
@@ -138,6 +138,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
             y_ticks = [GraphTick]()
             ComputeTicks(&x_ticks, x: true)
             ComputeTicks(&y_ticks, x: false)
+            Grid = ComputeGrid(ticks: y_ticks + x_ticks)
             (lines, LastIterations) = ComputeEquations(["x", "x^2", "x^3"])
             self.setNeedsDisplay()
         }
@@ -154,6 +155,8 @@ class GraphView: UIView, GraphViewControllerDelegate {
     
     fileprivate var x_ticks = [GraphTick]()
     fileprivate var y_ticks = [GraphTick]()
+    
+    fileprivate var Grid = [UIBezierPath]()
     
     fileprivate func XMinMaxDifference() -> CGFloat{
         let AbsMaxX = abs(MaxX)
@@ -358,10 +361,6 @@ class GraphView: UIView, GraphViewControllerDelegate {
         }
         print("The skipping factor is \(skippingFactor), starting at \(Start)")
         
-        if x{
-            
-        }
-        
         for Current in stride(from: Start, to: max, by: skippingFactor / 5){
             
             if Current == 0{
@@ -439,6 +438,28 @@ class GraphView: UIView, GraphViewControllerDelegate {
         return (ResultingEquations, num)
     }
     
+    func ComputeGrid(ticks : [GraphTick]) -> [UIBezierPath]{
+        var allGridGuides = [UIBezierPath]()
+        for tick in ticks{
+            let currentGuidePath = UIBezierPath()
+            currentGuidePath.lineWidth = AxisWidth / 4
+            var startPoint : (x : Double, y : Double) = (Double(MinX), tick.Number)
+            var secondPoint : (x : Double, y : Double) = (Double(MaxX), tick.Number)
+            var firstCoordinate = PointForCoordinates(startPoint.x, y: startPoint.y)
+            var secondCoordinate = PointForCoordinates(secondPoint.x, y: secondPoint.y)
+            if !tick.YTick { //need to draw vertically
+                startPoint = (tick.Number, Double(MaxY))
+                secondPoint = (tick.Number, Double(MinY))
+                firstCoordinate = PointForCoordinates(startPoint.x, y: startPoint.y)
+                secondCoordinate = PointForCoordinates(secondPoint.x, y: secondPoint.y)
+            }
+            currentGuidePath.move(to: firstCoordinate)
+            currentGuidePath.addLine(to: secondCoordinate)
+            allGridGuides.append(currentGuidePath)
+        }
+        return allGridGuides
+    }
+    
     let cursorDimension : CGFloat = 30
     
     // Only override drawRect: if you perform custom drawing.
@@ -454,6 +475,13 @@ class GraphView: UIView, GraphViewControllerDelegate {
         for tick in self.x_ticks{
             tick.draw()
         }
+        
+        for guide in Grid{
+            UIColor.gray.set()
+            guide.stroke()
+        }
+        
+        UIColor.black.set()
         
         for line in self.lines { line.Draw() }
         

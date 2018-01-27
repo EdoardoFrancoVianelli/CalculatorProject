@@ -11,19 +11,19 @@ import UIKit
 
 class GraphTick{
     
-    fileprivate var _number = 0.0
+    private(set) var Number = 0.0
     fileprivate var _number_location : CGPoint? {
         didSet{
             AttributedNumber = NSAttributedString(string: NumberString)
         }
     }
     fileprivate var _tick_path = UIBezierPath()
-    fileprivate var y_tick = false
+    private(set) var YTick = false
     fileprivate var AttributedNumber : NSAttributedString? = NSAttributedString(string: ""){
         didSet{
             guard let NumberLocation = _number_location else { return }
             var origin = CGPoint(x: NumberLocation.x - AttributedNumber!.size().width / 2, y: NumberLocation.y)
-            if y_tick{
+            if YTick{
                 origin = CGPoint(x: NumberLocation.x, y: NumberLocation.y - AttributedNumber!.size().height / 2)
             }
             num_frame = CGRect(origin: origin, size: AttributedNumber!.size())
@@ -32,17 +32,16 @@ class GraphTick{
     fileprivate var num_frame   = CGRect.zero
     
     var NumberFrame : CGRect { return num_frame }
-    var NumberString : String { return TickFormatter().string(from: NSNumber(value: _number as Double))! }
+    var NumberString : String { return TickFormatter().string(from: NSNumber(value: Number as Double))! }
     var TickPath : UIBezierPath { return _tick_path }
     var NumberLocation : CGPoint? { return _number_location }
-    var Number : Double { return _number }
     
     init(number : Double, y : Bool) {
-        _number = number
+        Number = number
         SetYTick(y)
     }
     
-    func SetYTick(_ val : Bool) { y_tick = val }
+    func SetYTick(_ val : Bool) { YTick = val }
     
     func SetTickPath(_ start : CGPoint, end : CGPoint, width : CGFloat){
         _tick_path = LinePath(fromPoint: start, toPoint: end, width: width)
