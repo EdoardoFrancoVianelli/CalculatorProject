@@ -417,15 +417,25 @@ class GraphView: UIView, GraphViewControllerDelegate {
         {
             var CurrentEquation = Line(Expression: equation, numLines: i)
             
-            let calculator = ExpressionEvaluator(expression: equation)
-            
             let num_ticks = self.bounds.size.width / 4
             let increment = (MaxX - MinX) / num_ticks
-        
+    
             for x in stride(from: Double(MinX), to: Double(MaxX), by: Double(increment)){
-                calculator.SetVariableValue("x", value: x)
-                let Point = PointForCoordinates(x, y: calculator.Result)
-                CurrentEquation.AddPoint(Point)
+                
+                let calculator = Expression(equation,
+                                            options: [],
+                                            constants: [:],
+                                            arrays: [:],
+                                            symbols: [Expression.Symbol.variable("x"):{ _ in x }])
+                
+                do {
+                    let result = try calculator.evaluate()
+                    let Point = PointForCoordinates(x, y: result)
+                    CurrentEquation.AddPoint(Point)
+                }
+                catch{
+                    return (ResultingEquations, num)
+                }
                 num += 1
             }
             

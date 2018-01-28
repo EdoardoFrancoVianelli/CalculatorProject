@@ -105,6 +105,10 @@ class GraphViewController: UIViewController, GraphViewDelegate, UITableViewDeleg
                                      newYScale: Settings.YScale)
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.graph.delegate = self
