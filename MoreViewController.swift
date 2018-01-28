@@ -30,7 +30,7 @@ class MoreViewController: UITableViewController {
                                    "Y6" : "x^6"]
     fileprivate let CellIdentifier = "MoreCell"
     fileprivate let NamesForSection = [1 : ["X Max", "X Min", "X Scale"] , 2 : ["Y Max", "Y Min", "Y Scale"],
-                                   3 : ["Y 1", "Y 2", "Y 3", "Y 4", "Y 5", "Y 6"] ]
+                                   3 : ["Y1", "Y2", "Y3", "Y4", "Y5", "Y6"] ]
     
     private func initSettings(){
         if Settings.getSaved("XMax") == nil{
@@ -50,6 +50,12 @@ class MoreViewController: UITableViewController {
         }
         if Settings.getSaved("YScale") == nil{
             Settings.setSaved("YScale", 1.0)
+        }
+        
+        for expressionName in ["Y1","Y2","Y3","Y4","Y5","Y6"]{
+            if Settings.getSaved(expressionName) == nil{
+                Settings.setSaved(expressionName, "")
+            }
         }
     }
     
@@ -78,37 +84,36 @@ class MoreViewController: UITableViewController {
     @IBAction func SetParameter(_ sender : UITextField)
     {
         sender.resignFirstResponder()
-        if let CurrentValue = sender.text{
-            if let NewValue = NumberFormatter().number(from: CurrentValue)?.doubleValue
-            {
-                guard let cell = sender.superview?.superview as? MoreTableViewCell else { return }
-                guard let parameterName = cell.Label?.text?.removeSpaces() else { return }
-                let current_value = Settings.getSavedOrDefaultDouble(parameterName, 1.0)
-                Settings.setSaved(parameterName, NewValue)
-                
-                if (parameterName == "XScale" || parameterName == "YScale") { //scale needs to be non-negative
-                    if NewValue < 0{
-                        sender.text = "\(current_value)"
-                        Settings.setSaved(parameterName, current_value)
-                    }
-                }else if (parameterName.hasPrefix("X")){                 //mins need to be smaller than max
-                    if Settings.XMin >= Settings.XMax{
-                        sender.text = "\(current_value)"
-                        Settings.setSaved(parameterName, current_value)
-                    }
-                }else if (parameterName.hasPrefix("Y")){
-                    if Settings.YMin >= Settings.YMax{
-                        sender.text = "\(current_value)"
-                        Settings.setSaved(parameterName, current_value)
-                    }
+        guard let cell = sender.superview?.superview as? MoreTableViewCell else { return }
+        guard let parameterName = cell.Label?.text?.removeSpaces() else { return }
+        guard let CurrentValue = sender.text else { return }
+        let equationNames = ["Y1","Y2","Y3", "Y4", "Y5", "Y6"]
+        if !equationNames.contains(parameterName)
+        {
+            guard let NewValue = NumberFormatter().number(from: CurrentValue)?.doubleValue else { return }
+            let current_value = Settings.getSavedOrDefaultDouble(parameterName, 1.0)
+            Settings.setSaved(parameterName, NewValue)
+            
+            if (parameterName == "XScale" || parameterName == "YScale") { //scale needs to be non-negative
+                if NewValue < 0{
+                    sender.text = "\(current_value)"
+                    Settings.setSaved(parameterName, current_value)
+                }
+            }else if (parameterName.hasPrefix("X")){                 //mins need to be smaller than max
+                if Settings.XMin >= Settings.XMax{
+                    sender.text = "\(current_value)"
+                    Settings.setSaved(parameterName, current_value)
+                }
+            }else if (parameterName.hasPrefix("Y")){
+                if Settings.YMin >= Settings.YMax{
+                    sender.text = "\(current_value)"
+                    Settings.setSaved(parameterName, current_value)
                 }
             }
-            else
-            {
-                print("\(CurrentValue) is not a valid number")
-            }
-        }else {
-            print("The text field is empty")
+        }
+        else
+        {
+            Settings.setSaved(parameterName, CurrentValue)
         }
     }
     

@@ -30,6 +30,55 @@ class Settings{
         UserDefaults.standard.set(value, forKey: name)
     }
     
+    static var Y1 : String? {
+        set{
+            let toSave = newValue == nil ? "" : newValue!
+            setSaved("Y1", toSave)
+        }get{
+            return getSaved("Y1") as? String
+        }
+    }
+    static var Y2 : String? {
+        set{
+            let toSave = newValue == nil ? "" : newValue!
+            setSaved("Y2", toSave)
+        }get{
+            return getSaved("Y2") as? String
+        }
+    }
+    static var Y3 : String? {
+        set{
+            let toSave = newValue == nil ? "" : newValue!
+            setSaved("Y3", toSave)
+        }get{
+            return getSaved("Y3") as? String
+        }
+    }
+    static var Y4 : String? {
+        set{
+            let toSave = newValue == nil ? "" : newValue!
+            setSaved("Y4", toSave)
+        }get{
+            return getSaved("Y4") as? String
+        }
+    }
+    static var Y5 : String? {
+        set{
+            let toSave = newValue == nil ? "" : newValue!
+            setSaved("Y5", toSave)
+        }get{
+            return getSaved("Y5") as? String
+        }
+    }
+    static var Y6 : String? {
+        set{
+            let toSave = newValue == nil ? "" : newValue!
+            setSaved("Y6", toSave)
+        }get{
+            return getSaved("Y6") as? String
+        }
+    }
+    
     static var XScale : Double {
         set {
             setSaved("XScale", newValue)
@@ -78,4 +127,31 @@ class Settings{
         }
     }
     
+    static var allEquations : [String : String] {
+        get{
+            var all = [String : String]()
+            let equationNames = ["Y1","Y2","Y3","Y4","Y5","Y6"]
+            let equations = [Y1,Y2,Y3,Y4,Y5,Y6]
+            for i in 0..<6{
+                let equationSet : (name : String, equation : String?) = (equationNames[i], equations[i])
+                if let currentEquation = equationSet.equation{
+                    if currentEquation != ""{
+                        all[equationSet.name] = currentEquation
+                    }
+                }
+            }
+            return all
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+

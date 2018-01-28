@@ -9,7 +9,13 @@
 import UIKit
 
 protocol GraphViewControllerDelegate{
-    func GraphViewDidAppear(newXMax : Double, newXMin : Double, newXScale : Double, newYMax : Double, newYMin : Double, newYScale : Double)
+    func GraphViewDidAppear(newXMax : Double,
+                            newXMin : Double,
+                            newXScale : Double,
+                            newYMax : Double,
+                            newYMin : Double,
+                            newYScale : Double,
+                            equations : [String : String])
 }
 
 protocol GraphViewDelegate{
@@ -124,6 +130,8 @@ class GraphView: UIView, GraphViewControllerDelegate {
         }
     }
     
+    private var expressions = [String:String]()
+    
     fileprivate var LastIterations = 0
     
     fileprivate func ReRender()
@@ -139,7 +147,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
             ComputeTicks(&x_ticks, x: true)
             ComputeTicks(&y_ticks, x: false)
             Grid = ComputeGrid(ticks: y_ticks + x_ticks)
-            (lines, LastIterations) = ComputeEquations(["x", "x^2", "x^3"])
+            (lines, LastIterations) = ComputeEquations(expressions)
             self.setNeedsDisplay()
         }
     }
@@ -407,22 +415,23 @@ class GraphView: UIView, GraphViewControllerDelegate {
         print("Iterations for x ticks is \(iterations)")
     }
     
-    fileprivate func ComputeEquations(_ equations : [String]) -> ([Line], iterations : Int)
+    fileprivate func ComputeEquations(_ equations : [String : String]) -> ([Line], iterations : Int)
     {
         var ResultingEquations = [Line]()
         
         var num = 0
         
-        for (i,equation) in equations.enumerated()
+        for (i, equation) in equations.enumerated()
         {
-            var CurrentEquation = Line(Expression: equation, numLines: i)
+            let expressionPair : (name : String, expression : String) = (equation.key, equation.value)
+            var CurrentEquation = Line(Expression: expressionPair.expression, numLines: i)
             
             let num_ticks = self.bounds.size.width / 4
             let increment = (MaxX - MinX) / num_ticks
     
             for x in stride(from: Double(MinX), to: Double(MaxX), by: Double(increment)){
                 
-                let calculator = Expression(equation,
+                let calculator = Expression(expressionPair.expression,
                                             options: [],
                                             constants: [:],
                                             arrays: [:],
@@ -501,13 +510,23 @@ class GraphView: UIView, GraphViewControllerDelegate {
         
         (self.delegate as? GraphViewDelegate)?.RenderingEnded(self.LastIterations)
     }
+    
+    private func expressionsAltered(original : [String : String], new : [String : String]) -> Bool{
+        for expressionElement in new{
+            if !(original[expressionElement.key] == new[expressionElement.key]){
+                return true
+            }
+        }
+        return false
+    }
         
     func GraphViewDidAppear(newXMax : Double,
                             newXMin : Double,
                             newXScale : Double,
                             newYMax : Double,
                             newYMin : Double,
-                            newYScale : Double) {
+                            newYScale : Double,
+                            equations : [String : String]) {
         
         print("Updating parameters...")
         
@@ -542,6 +561,11 @@ class GraphView: UIView, GraphViewControllerDelegate {
         }
         if newYScale_f != YScale{
             YScale = newYScale_f
+            parameter_changed = true
+        }
+        
+        if expressionsAltered(original: self.expressions, new: equations){
+            self.expressions = equations
             parameter_changed = true
         }
         

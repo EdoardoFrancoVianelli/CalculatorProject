@@ -102,7 +102,8 @@ class GraphViewController: UIViewController, GraphViewDelegate, UITableViewDeleg
                                      newXScale: Settings.XScale,
                                      newYMax: Settings.YMax,
                                      newYMin: Settings.YMin,
-                                     newYScale: Settings.YScale)
+                                     newYScale: Settings.YScale,
+                                     equations: Settings.allEquations)
     }
     
     override var prefersStatusBarHidden: Bool {
