@@ -135,9 +135,9 @@ class Settings{
             for i in 0..<6{
                 let equationSet : (name : String, equation : String?) = (equationNames[i], equations[i])
                 if let currentEquation = equationSet.equation{
-                    if currentEquation != ""{
+                    //if currentEquation != ""{
                         all[equationSet.name] = currentEquation
-                    }
+                    //}
                 }
             }
             return all

@@ -144,10 +144,10 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Ui-jX-rxh">
-                                <rect key="frame" x="375" y="20" width="188" height="647"/>
+                                <rect key="frame" x="375" y="0.0" width="188" height="667"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LIw-fH-LVB">
-                                        <rect key="frame" x="0.0" y="0.0" width="188" height="647"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="188" height="667"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <prototypes>
@@ -197,6 +197,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="4Ui-jX-rxh" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="FED-JQ-ZdF"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hRn-yw-JwM" secondAttribute="bottom" id="RuL-h8-uge"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="7Cl-dt-U9c" secondAttribute="bottom" constant="8" id="VnM-RN-Q3j"/>
                             <constraint firstItem="4Ui-jX-rxh" firstAttribute="leading" secondItem="QEp-G1-p8J" secondAttribute="trailing" constant="8" id="ZgP-Lv-O2S"/>
@@ -205,8 +206,7 @@
                             <constraint firstItem="hRn-yw-JwM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="dwo-53-yo8"/>
                             <constraint firstAttribute="trailing" secondItem="4Ui-jX-rxh" secondAttribute="trailing" constant="-188" id="eCs-MX-CFo"/>
                             <constraint firstItem="QEp-G1-p8J" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="epx-jX-tcH"/>
-                            <constraint firstItem="4Ui-jX-rxh" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" id="iKC-ah-TTS"/>
-                            <constraint firstItem="4Ui-jX-rxh" firstAttribute="height" secondItem="hRn-yw-JwM" secondAttribute="height" id="oqL-dp-9Sk"/>
+                            <constraint firstItem="4Ui-jX-rxh" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="iKC-ah-TTS"/>
                             <constraint firstItem="4Ui-jX-rxh" firstAttribute="leading" secondItem="hRn-yw-JwM" secondAttribute="trailing" id="rC0-0k-ct7"/>
                             <constraint firstItem="4Ui-jX-rxh" firstAttribute="leading" secondItem="7Cl-dt-U9c" secondAttribute="trailing" constant="8" id="sSX-uK-3sg"/>
                         </constraints>
@@ -336,7 +336,8 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
-                                                <action selector="SetParameter:" destination="cAt-5l-h1L" eventType="editingDidEndOnExit" id="rtu-vM-kwU"/>
+                                                <action selector="ParameterChanged:" destination="cAt-5l-h1L" eventType="editingDidEndOnExit" id="bzU-9g-V5u"/>
+                                                <action selector="SetParameter:" destination="cAt-5l-h1L" eventType="editingChanged" id="Ssi-6p-cuv"/>
                                             </connections>
                                         </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a9f-R4-ybX">

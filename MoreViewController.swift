@@ -83,7 +83,6 @@ class MoreViewController: UITableViewController {
     
     @IBAction func SetParameter(_ sender : UITextField)
     {
-        sender.resignFirstResponder()
         guard let cell = sender.superview?.superview as? MoreTableViewCell else { return }
         guard let parameterName = cell.Label?.text?.removeSpaces() else { return }
         guard let CurrentValue = sender.text else { return }

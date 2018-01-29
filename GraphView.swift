@@ -147,16 +147,13 @@ class GraphView: UIView, GraphViewControllerDelegate {
             ComputeTicks(&x_ticks, x: true)
             ComputeTicks(&y_ticks, x: false)
             Grid = ComputeGrid(ticks: y_ticks + x_ticks)
-            (lines, LastIterations) = ComputeEquations(expressions)
+            lines = ComputeEquations(expressions)
             self.setNeedsDisplay()
         }
     }
     
-    fileprivate var _XTickWidth : CGFloat = 0.0
-    fileprivate var _YTickHeight : CGFloat = 0.0
-    
-    fileprivate var XTickWidth : CGFloat { return _XTickWidth }
-    fileprivate var YTickHeight : CGFloat { return _YTickHeight }
+    fileprivate var XTickWidth : CGFloat = 0.0
+    fileprivate var YTickHeight : CGFloat = 0.0
     
     fileprivate var XAxis = UIBezierPath()
     fileprivate var YAxis = UIBezierPath()
@@ -210,8 +207,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
     
     fileprivate func RenewTickDimensions()
     {
-        _XTickWidth = GetXTickWidth()
-        _YTickHeight = GetYTickHeight()
+        (XTickWidth, YTickHeight) = (GetXTickWidth(), GetYTickHeight())
     }
     
     @IBOutlet var delegate : AnyObject?
@@ -235,6 +231,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
     @objc internal func TogglePointLabel(_ sender : UITapGestureRecognizer){
         if let hidden = sender.view?.isHidden{
             sender.view?.isHidden = !hidden
+            pointCursor.isHidden = true
         }
     }
     
@@ -254,12 +251,21 @@ class GraphView: UIView, GraphViewControllerDelegate {
         return "\(point)"
     }
     
-    fileprivate func InitializePointLabel()
+    let pointCursorDimension : CGFloat = 10
+    
+    fileprivate func InitializePointLabelAndCursor()
     {
+        /*INITIALIZE POINT LABEL*/
         pointLabel.isUserInteractionEnabled = true
         pointLabel.adjustsFontSizeToFitWidth = true
         pointLabel.numberOfLines = 2
         addSubview(pointLabel)
+        
+        /*INITIALIZE CURSOR*/
+        
+        pointCursor.backgroundColor = UIColor.black
+        pointCursor.layer.cornerRadius = pointCursorDimension / 2
+        addSubview(pointCursor)
     }
     
     @objc internal func UpdatePointLabel(_ sender : UIGestureRecognizer)
@@ -267,8 +273,11 @@ class GraphView: UIView, GraphViewControllerDelegate {
         SetPointLabelWithLocation(sender.location(in: self))
     }
     
+    var pointCursor = UIView()
+    
     fileprivate func SetPointLabelWithLocation(_ touchLocation : CGPoint){
-        pointLabel.isHidden = false
+        
+        pointCursor.isHidden = false
         let XYPoint = CoordinatesForPoint(Double(touchLocation.x), YCoordinateInScreen: Double(touchLocation.y))
         let labelText = PointToString(XYPoint)
         let labelHeight : CGFloat = 80
@@ -289,7 +298,12 @@ class GraphView: UIView, GraphViewControllerDelegate {
         }
         
         pointLabel.text = labelText
+        
         //position the cursor
+        pointCursor.frame.origin = CGPoint(x: touchLocation.x - pointCursorDimension / 2, y: touchLocation.y - pointCursorDimension / 2)
+        pointCursor.frame.size = CGSize(width: pointCursorDimension, height: pointCursorDimension)
+        
+        pointCursor.isHidden = false
     }
     
     func ConfigureMovePointLabel()
@@ -324,7 +338,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
         AddTapToShowPointInfo()
         AddTapToHidePointLabel()
         ConfigureMovePointLabel()
-        InitializePointLabel()
+        InitializePointLabelAndCursor()
         AllSet = true
     }
     
@@ -378,7 +392,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
             
             let x_coord = x ? Double(Current) : 0.0
             let y_coord = x ? 0.0 : Double(Current)
-            let ScreenCoordinates = PointForCoordinates(x_coord, y: y_coord)
+            let ScreenCoordinates = PointForCoordinates(x: x_coord, y: y_coord)
             let CurrentTick = GraphTick(number: x ? x_coord : y_coord, y: !x)
             //TODO: modify from here
             let hasNumber = (iterations % 5 == 0)
@@ -415,46 +429,52 @@ class GraphView: UIView, GraphViewControllerDelegate {
         print("Iterations for x ticks is \(iterations)")
     }
     
-    fileprivate func ComputeEquations(_ equations : [String : String]) -> ([Line], iterations : Int)
-    {
+    /**Takes an equation array with (x,y) points and converts it into a line array with screen points*/
+    fileprivate func LineFromEquations(equations : [Equation]) -> [Line]{
         var ResultingEquations = [Line]()
+
+        for (i, equation) in equations.enumerated(){
+            var CurrentEquation = Line(Expression: equation.equation, numLines: i)
+            for point in equation.points{
+                let Point = PointForCoordinates(x: point.x, y: point.y)
+                CurrentEquation.AddPoint(Point)
+            }
+            ResultingEquations.append(CurrentEquation)
+        }
         
-        var num = 0
-        
-        for (i, equation) in equations.enumerated()
-        {
-            let expressionPair : (name : String, expression : String) = (equation.key, equation.value)
-            var CurrentEquation = Line(Expression: expressionPair.expression, numLines: i)
-            
-            let num_ticks = self.bounds.size.width / 4
-            let increment = (MaxX - MinX) / num_ticks
+        return ResultingEquations
+    }
     
+    fileprivate func ComputeEquations(_ equations : [String : String]) -> [Line]
+    {
+        var allEquations = [Equation]()
+        
+        let num_ticks = self.bounds.size.width / 4
+        let increment = (MaxX - MinX) / num_ticks
+        
+        for equationPair in equations
+        {
+            let expression = equationPair.value
+            let currentEquation = Equation(equation: expression)
             for x in stride(from: Double(MinX), to: Double(MaxX), by: Double(increment)){
-                
-                let calculator = Expression(expressionPair.expression,
+                let calculator = Expression(expression,
                                             options: [],
                                             constants: [:],
                                             arrays: [:],
                                             symbols: [Expression.Symbol.variable("x"):{ _ in x }])
-                
                 do {
                     let result = try calculator.evaluate()
-                    let Point = PointForCoordinates(x, y: result)
-                    CurrentEquation.AddPoint(Point)
+                    currentEquation.addPoint(x: x, y: result)
+                }catch{
+                    continue
                 }
-                catch{
-                    return (ResultingEquations, num)
-                }
-                num += 1
             }
-            
-            ResultingEquations.append(CurrentEquation)
-            //UpdateFunctionLabel(calculator.Expression, color: CurrentEquation.Color, i: i)
+            allEquations.append(currentEquation)
         }
         
-        print("\(num) iterations to render all functions")
+        let resultingLines = LineFromEquations(equations: allEquations)
         
-        return (ResultingEquations, num)
+        return resultingLines
     }
     
     func ComputeGrid(ticks : [GraphTick]) -> [UIBezierPath]{
@@ -464,13 +484,13 @@ class GraphView: UIView, GraphViewControllerDelegate {
             currentGuidePath.lineWidth = AxisWidth / 4
             var startPoint : (x : Double, y : Double) = (Double(MinX), tick.Number)
             var secondPoint : (x : Double, y : Double) = (Double(MaxX), tick.Number)
-            var firstCoordinate = PointForCoordinates(startPoint.x, y: startPoint.y)
-            var secondCoordinate = PointForCoordinates(secondPoint.x, y: secondPoint.y)
+            var firstCoordinate = PointForCoordinates(x: startPoint.x, y: startPoint.y)
+            var secondCoordinate = PointForCoordinates(x: secondPoint.x, y: secondPoint.y)
             if !tick.YTick { //need to draw vertically
                 startPoint = (tick.Number, Double(MaxY))
                 secondPoint = (tick.Number, Double(MinY))
-                firstCoordinate = PointForCoordinates(startPoint.x, y: startPoint.y)
-                secondCoordinate = PointForCoordinates(secondPoint.x, y: secondPoint.y)
+                firstCoordinate = PointForCoordinates(x: startPoint.x, y: startPoint.y)
+                secondCoordinate = PointForCoordinates(x: secondPoint.x, y: secondPoint.y)
             }
             currentGuidePath.move(to: firstCoordinate)
             currentGuidePath.addLine(to: secondCoordinate)
@@ -509,6 +529,13 @@ class GraphView: UIView, GraphViewControllerDelegate {
         self.AllSet = false
         
         (self.delegate as? GraphViewDelegate)?.RenderingEnded(self.LastIterations)
+        
+        //CLEAN UP SOME MEMORY
+        
+        self.XAxis = UIBezierPath()
+        self.YAxis = UIBezierPath()
+        self.Grid = [UIBezierPath]()
+        self.lines = [Line]()
     }
     
     private func expressionsAltered(original : [String : String], new : [String : String]) -> Bool{
@@ -654,7 +681,7 @@ class GraphView: UIView, GraphViewControllerDelegate {
          */
     }
     
-    internal func PointForCoordinates(_ x : Double, y : Double) -> CGPoint
+    internal func PointForCoordinates(x : Double, y : Double) -> CGPoint
     {
         return CGPoint(x: XPoint(x), y: YPoint(y))
     }

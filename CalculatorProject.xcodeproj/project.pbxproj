@@ -12,6 +12,8 @@
 		A8AD8AF6200F0B0A00CB5258 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AD8AF5200F0B0A00CB5258 /* Settings.swift */; };
 		A8B0011C201BC3B400E4CE88 /* ConfirmCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B0011B201BC3B400E4CE88 /* ConfirmCellTableViewCell.swift */; };
 		A8B0011E201D617E00E4CE88 /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B0011D201D617E00E4CE88 /* Expression.swift */; };
+		A8CBDC69201EC3F90063DEEC /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CBDC68201EC3F90063DEEC /* Line.swift */; };
+		A8CBDC6B201EC5350063DEEC /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8CBDC6A201EC5350063DEEC /* Equation.swift */; };
 		C867EDC51D11A777003D8395 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867EDC41D11A777003D8395 /* MoreViewController.swift */; };
 		C867EDC71D1C0963003D8395 /* NumericalConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C867EDC61D1C0963003D8395 /* NumericalConversions.swift */; };
 		C87E0E231D6648920024ECC8 /* PastCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87E0E221D6648920024ECC8 /* PastCode.swift */; };
@@ -54,6 +56,8 @@
 		A8AD8AF5200F0B0A00CB5258 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A8B0011B201BC3B400E4CE88 /* ConfirmCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmCellTableViewCell.swift; sourceTree = "<group>"; };
 		A8B0011D201D617E00E4CE88 /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
+		A8CBDC68201EC3F90063DEEC /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		A8CBDC6A201EC5350063DEEC /* Equation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equation.swift; sourceTree = "<group>"; };
 		C867EDC41D11A777003D8395 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		C867EDC61D1C0963003D8395 /* NumericalConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumericalConversions.swift; sourceTree = "<group>"; };
 		C87E0E221D6648920024ECC8 /* PastCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastCode.swift; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				C8A284691D0C0CE60077F1FD /* GraphView.swift */,
 				C89AA4341D51DD8100BE57B9 /* GraphElements.swift */,
 				A87D1FE120190E22008459F6 /* GraphBounds.swift */,
+				A8CBDC68201EC3F90063DEEC /* Line.swift */,
+				A8CBDC6A201EC5350063DEEC /* Equation.swift */,
 			);
 			name = "GraphView MVC";
 			sourceTree = "<group>";
@@ -343,11 +349,13 @@
 				C8A2846D1D0C10BA0077F1FD /* CalculatorViewController.swift in Sources */,
 				C8A2846A1D0C0CE60077F1FD /* GraphView.swift in Sources */,
 				A87D1FE420198481008459F6 /* RoundedView.swift in Sources */,
+				A8CBDC6B201EC5350063DEEC /* Equation.swift in Sources */,
 				C867EDC51D11A777003D8395 /* MoreViewController.swift in Sources */,
 				A8B0011C201BC3B400E4CE88 /* ConfirmCellTableViewCell.swift in Sources */,
 				A87D1FE220190E22008459F6 /* GraphBounds.swift in Sources */,
 				C8F6B5BF1D48F4D100AA393D /* NSObject+Constants.m in Sources */,
 				C8A284721D0C10E90077F1FD /* Calculator.swift in Sources */,
+				A8CBDC69201EC3F90063DEEC /* Line.swift in Sources */,
 				C867EDC71D1C0963003D8395 /* NumericalConversions.swift in Sources */,
 				C89AA4351D51DD8100BE57B9 /* GraphElements.swift in Sources */,
 			);
