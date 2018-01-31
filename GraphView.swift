@@ -140,13 +140,13 @@ class GraphView: UIView, GraphViewControllerDelegate {
         {
             (delegate as? GraphViewDelegate)?.RenderingStarted()
             RenewTickDimensions()
-            XAxis = ComputeXAxis(CGFloat(YPoint(0.0)), AxisWidth: AxisWidth, GraphWidth: frame.size.width)
-            YAxis = ComputeYAxis(CGFloat(XPoint(0.0)), AxisWidth: AxisWidth, GraphHeight: frame.size.height)
-            x_ticks = ComputeTicks(x: true)
-            y_ticks = ComputeTicks(x: false)
+            ComputeAxes()
+            ComputeTicks()
             Grid = ComputeGrid(ticks: y_ticks + x_ticks)
             
-            let equations = ComposeEquations(forFunction: self.expressions)
+            let numTicks = Int(self.bounds.size.width / 4)
+            
+            let equations = ComposeEquations(forFunction: self.expressions, withNumberOfPoints: numTicks)
             lines = ComposeLines(equations: equations)
             
             self.setNeedsDisplay()
@@ -449,11 +449,10 @@ class GraphView: UIView, GraphViewControllerDelegate {
         return ResultingEquations
     }
     
-    fileprivate func ComposeEquations(forFunction functions : [String : String]) -> [Equation]{
+    fileprivate func ComposeEquations(forFunction functions : [String : String], withNumberOfPoints num_ticks : Int) -> [Equation]{
          var allEquations = [Equation]()
          
-         let num_ticks = self.bounds.size.width / 4
-         let increment = (MaxX - MinX) / num_ticks
+         let increment = (MaxX - MinX) / CGFloat(num_ticks)
          
          for function in functions
          {
@@ -627,26 +626,27 @@ class GraphView: UIView, GraphViewControllerDelegate {
         return CoordinatesForPoint(Double(point.x), YCoordinateInScreen: Double(point.y))
     }
     
-    fileprivate func ComputeXAxis(_ YLocation : CGFloat, AxisWidth : CGFloat, GraphWidth : CGFloat) -> UIBezierPath
-    {
-        let XAxis = UIBezierPath()
-        
-        XAxis.move(to: CGPoint(x: 0.0, y: YLocation))
-        XAxis.addLine(to: CGPoint(x: GraphWidth, y: YLocation))
-        XAxis.lineWidth = AxisWidth
-        
-        return XAxis
+    fileprivate func ComputeAxes(){
+        XAxis = ComputeAxis(withStartingLocation: PointForCoordinates(x: Double(MinX), y: 0.0), withWidth: AxisWidth, andLength: frame.size.width, forY: false)
+        YAxis = ComputeAxis(withStartingLocation: PointForCoordinates(x: 0.0, y: Double(MinY)), withWidth: AxisWidth, andLength: frame.size.height, forY: true)
     }
     
-    fileprivate func ComputeYAxis(_ XLocation : CGFloat, AxisWidth : CGFloat, GraphHeight : CGFloat) -> UIBezierPath
+    fileprivate func ComputeTicks(){
+        x_ticks = ComputeTicks(x: true)
+        y_ticks = ComputeTicks(x: false)
+    }
+    
+    fileprivate func ComputeAxis(withStartingLocation startingLocation : CGPoint,
+                                 withWidth width : CGFloat,
+                                 andLength length : CGFloat,
+                                 forY Y : Bool) -> UIBezierPath
     {
-        let YAxis = UIBezierPath()
-        
-        YAxis.move(to: CGPoint(x: XLocation, y: 0.0))
-        YAxis.addLine(to: CGPoint(x: XLocation, y: GraphHeight))
-        YAxis.lineWidth = AxisWidth
-        
-        return YAxis
+        let axis = UIBezierPath()
+        axis.move(to: startingLocation)
+        let destination = Y ? CGPoint(x: startingLocation.x, y: startingLocation.y - length) : CGPoint(x: startingLocation.x + length, y: startingLocation.y)
+        axis.addLine(to: destination)
+        axis.lineWidth = width
+        return axis
     }
     
     fileprivate func XAxisStartLocation() -> Double
