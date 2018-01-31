@@ -142,12 +142,13 @@ class GraphView: UIView, GraphViewControllerDelegate {
             RenewTickDimensions()
             XAxis = ComputeXAxis(CGFloat(YPoint(0.0)), AxisWidth: AxisWidth, GraphWidth: frame.size.width)
             YAxis = ComputeYAxis(CGFloat(XPoint(0.0)), AxisWidth: AxisWidth, GraphHeight: frame.size.height)
-            x_ticks = [GraphTick]()
-            y_ticks = [GraphTick]()
-            ComputeTicks(&x_ticks, x: true)
-            ComputeTicks(&y_ticks, x: false)
+            x_ticks = ComputeTicks(x: true)
+            y_ticks = ComputeTicks(x: false)
             Grid = ComputeGrid(ticks: y_ticks + x_ticks)
-            lines = ComputeEquations(expressions)
+            
+            let equations = ComposeEquations(forFunction: self.expressions)
+            lines = ComposeLines(equations: equations)
+            
             self.setNeedsDisplay()
         }
     }
@@ -367,7 +368,9 @@ class GraphView: UIView, GraphViewControllerDelegate {
         return OptimalSkippingFactor(MinX, max: MaxX, y: false)
     }
     
-    fileprivate func ComputeTicks(_ Ticks : inout [GraphTick], x : Bool){
+    fileprivate func ComputeTicks(x : Bool) -> [GraphTick]{
+        
+        var Ticks = [GraphTick]()
         
         let min = x ? MinX : MinY
         let max = x ? MaxX : MaxY
@@ -427,10 +430,11 @@ class GraphView: UIView, GraphViewControllerDelegate {
         }
         
         print("Iterations for x ticks is \(iterations)")
+        return Ticks
     }
     
     /**Takes an equation array with (x,y) points and converts it into a line array with screen points*/
-    fileprivate func LineFromEquations(equations : [Equation]) -> [Line]{
+    fileprivate func ComposeLines(equations : [Equation]) -> [Line]{
         var ResultingEquations = [Line]()
 
         for (i, equation) in equations.enumerated(){
@@ -445,16 +449,15 @@ class GraphView: UIView, GraphViewControllerDelegate {
         return ResultingEquations
     }
     
-    fileprivate func ComputeEquations(_ equations : [String : String]) -> [Line]
-    {
-        var allEquations = [Equation]()
-        
-        let num_ticks = self.bounds.size.width / 4
-        let increment = (MaxX - MinX) / num_ticks
-        
-        for equationPair in equations
-        {
-            let expression = equationPair.value
+    fileprivate func ComposeEquations(forFunction functions : [String : String]) -> [Equation]{
+         var allEquations = [Equation]()
+         
+         let num_ticks = self.bounds.size.width / 4
+         let increment = (MaxX - MinX) / num_ticks
+         
+         for function in functions
+         {
+            let expression = function.value
             let currentEquation = Equation(equation: expression)
             for x in stride(from: Double(MinX), to: Double(MaxX), by: Double(increment)){
                 let calculator = Expression(expression,
@@ -470,11 +473,9 @@ class GraphView: UIView, GraphViewControllerDelegate {
                 }
             }
             allEquations.append(currentEquation)
-        }
-        
-        let resultingLines = LineFromEquations(equations: allEquations)
-        
-        return resultingLines
+         }
+         
+        return allEquations
     }
     
     func ComputeGrid(ticks : [GraphTick]) -> [UIBezierPath]{

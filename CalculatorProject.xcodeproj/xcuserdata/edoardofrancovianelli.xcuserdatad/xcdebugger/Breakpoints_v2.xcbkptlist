@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GraphViewController.swift"
-            timestampString = "538888545.958843"
+            timestampString = "539053184.051473"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "68"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GraphViewController.swift"
-            timestampString = "538888545.959344"
+            timestampString = "539053184.051809"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "52"
@@ -74,12 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GraphView.swift"
-            timestampString = "538888545.959512"
+            timestampString = "539053184.051911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "416"
-            endingLineNumber = "416"
-            landmarkName = "ComputeTicks(_:x:)"
+            startingLineNumber = "419"
+            endingLineNumber = "419"
+            landmarkName = "ComputeTicks(x:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -122,7 +122,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Settings.swift"
-            timestampString = "538888545.9606791"
+            timestampString = "539053184.052611"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "136"
@@ -160,22 +160,6 @@
             startingLineNumber = "81"
             endingLineNumber = "81"
             landmarkName = "ParameterChanged(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GraphView.swift"
-            timestampString = "538888545.961506"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "454"
-            endingLineNumber = "454"
-            landmarkName = "ComputeEquations(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
